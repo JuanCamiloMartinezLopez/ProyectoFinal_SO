@@ -5,29 +5,27 @@ public class Cola {
 	private Proceso raiz;
 	private int rafagaTotal = 0;
 	public int t = 0;
-	private String index = "0,0, ";
+	private String index = "0,0";
 	private int barrera = 0;
 	private Proceso cabeza;
 	private int espera;
 	private String idcola;
 	
-	Cola(int espera, String idcola){
+	Cola(){
 		this.raiz = new Proceso();
 		this.raiz.rafaga = -1;
 		this.raiz.id = "-1";
 		this.raiz.sig = raiz;
 		this.raiz.padre = raiz;
-		this.espera = espera;
-		this.idcola = idcola;
 		cabeza = raiz.sig;
 	}
 
-	public void insertar(Proceso a, int rafaga, int tiempo, boolean mover) {
+	public void insertar(int rafaga, int tiempo) {
 		if (rafaga <= 0 ) {
 			return;
 		}
 		Proceso nuevo = new Proceso();
-		if (a == null) {
+		/*if (a == null) {
 			String [] aindex = index.split(",");
 			aindex[2] = idcola;
 			index = String.valueOf(Integer.valueOf(aindex[0])+1);
@@ -49,7 +47,7 @@ public class Cola {
 				nuevo.id = auxindex ;
 				nuevo.tllegada = a.tllegada;
 			}
-		}
+		}*/
 		if (raiz.sig == raiz) {
 			raiz.sig = nuevo;
 			nuevo.sig = raiz;

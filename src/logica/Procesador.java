@@ -35,6 +35,7 @@ public class Procesador implements Runnable{
 			try {
 				Thread.sleep(1000);
 				this.tiempo++;
+				this.monitor.actualizarTiempo(this.tiempo);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
