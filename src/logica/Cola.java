@@ -36,33 +36,10 @@ public class Cola {
 
 	//insertar un proceso nuevo
 	public void insertar(int rafaga, int tiempo) {
-		if (rafaga <= 0 ) {
+		if (rafaga <= 0 || tiempo<0 ) {
 			return;
 		}
 		Proceso nuevo = new Proceso();
-		/*if (a == null) {
-			String [] aindex = index.split(",");
-			aindex[2] = idcola;
-			index = String.valueOf(Integer.valueOf(aindex[0])+1);
-			index = index+","+aindex[1]+","+aindex[2];
-			nuevo.id = index;
-			nuevo.rafaga = rafaga;
-			nuevo.tllegada = tiempo;
-		}else {
-			String auxindex = "";
-			if (mover) {
-				nuevo.rafaga = a.rafaga;
-				nuevo.id = a.id;
-				nuevo.tllegada = tiempo;
-			}else {
-				nuevo.rafaga = rafaga;
-				String [] aindex = a.id.split(",");
-				auxindex  = String.valueOf(Integer.valueOf(aindex[1])+1);
-				auxindex  = aindex[0]+","+auxindex +","+aindex[2];
-				nuevo.id = auxindex ;
-				nuevo.tllegada = a.tllegada;
-			}
-		}*/
 		nuevo.id=String.valueOf((char)this.caracter);
 		this.caracter++;
 		nuevo.rafaga=rafaga;
@@ -86,7 +63,62 @@ public class Cola {
 	
 	//insertar un proceso existente
 	public void insertar(Proceso p) {
-
+		if (p==null) {
+			return;
+		}
+		Proceso nuevo = new Proceso();
+		nuevo.rafaga = p.rafaga;
+		int tamañoId=p.id.length();
+		if(tamañoId==1) {
+			nuevo.id=p.id+"1";
+		}else {
+			char id=p.id.charAt(0);
+			int numeroId=Integer.parseInt(String.valueOf(p.id.charAt(1)))+1;
+			nuevo.id=String.valueOf(id)+String.valueOf(numeroId);
+		} 
+		nuevo.tllegada = p.tllegada;
+		if (raiz.sig == raiz) {
+			raiz.sig = nuevo;
+			cabeza=nuevo;
+			nuevo.sig = raiz;
+			nuevo.padre = raiz;
+			raiz.padre = nuevo;
+		}else {
+			Proceso aux = raiz.padre;
+			aux.sig = nuevo;
+			nuevo.sig = raiz;
+			raiz.padre = nuevo;
+			nuevo.padre = aux;
+		}
+		this.numProcesos++;
+		this.rafagaTotal+=nuevo.rafaga;
+	}
+	
+	//insertar un proceso existente con nuevo tiempo de llegada
+	public void insertar(Proceso p, int tiempo) {
+		if (p==null || tiempo<0) {
+			return;
+		}
+		Proceso nuevo = new Proceso();
+		nuevo.rafaga = p.rafaga;
+		nuevo.id = p.id;
+		nuevo.tllegada = tiempo;
+		if (raiz.sig == raiz) {
+			raiz.sig = nuevo;
+			cabeza=nuevo;
+			nuevo.sig = raiz;
+			nuevo.padre = raiz;
+			raiz.padre = nuevo;
+		}else {
+			Proceso aux = raiz.padre;
+			aux.sig = nuevo;
+			nuevo.sig = raiz;
+			raiz.padre = nuevo;
+			nuevo.padre = aux;
+		}
+		this.numProcesos++;
+		this.rafagaTotal+=nuevo.rafaga;
+		
 	}
 	
 	//atender el primer proceso en la cola
