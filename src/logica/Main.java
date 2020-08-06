@@ -26,7 +26,23 @@ public class Main {
 		sfj.mostrarConsola();
 		 */
 		
-		Procesador proc= new Procesador();
+		//Procesador proc= new Procesador();
+		Cola prueba= new Cola();
+		prueba.insertar(1, 0);
+		prueba.insertar(2, 1);
+		prueba.insertar(3, 2);
+		prueba.mostrarConsola();
+		Proceso proc= prueba.atender();
+		System.out.println("\nProceso Atendido: "+proc.id + " | " + proc.tllegada + " | " + proc.rafaga+"\n");
+		prueba.mostrarConsola();
+		proc= prueba.atender();
+		System.out.println("\nProceso Atendido: "+proc.id + " | " + proc.tllegada + " | " + proc.rafaga+"\n");
+		prueba.mostrarConsola();
+		proc= prueba.atender();
+		System.out.println("\nProceso Atendido: "+proc.id + " | " + proc.tllegada + " | " + proc.rafaga+"\n");
+		prueba.mostrarConsola();
+		proc= prueba.atender();
+
 	}
 
 }
