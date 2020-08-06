@@ -1,9 +1,9 @@
-package Logica;
+package logica;
 
-public class main {
+public class Main {
 
 	public static void main(String[] args) {
-		Cola sfj = new Cola(1,15,"A");
+		/*Cola sfj = new Cola(15,"A");
 		int tiempo = 0;
 		sfj.insertar(null, 14, tiempo, false);
 		tiempo++;
@@ -24,7 +24,9 @@ public class main {
 		a.tllegada = 3;
 		sfj.insertar(a,a.rafaga,tiempo,false);
 		sfj.mostrarConsola();
-
+		 */
+		
+		Procesador proc= new Procesador();
 	}
 
 }

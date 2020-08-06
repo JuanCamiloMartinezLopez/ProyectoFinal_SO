@@ -1,24 +1,22 @@
-package Logica;
+package logica;
 
 public class Cola {
-	private int procesos = 0;
+	private int numProcesos = 0;
 	private Proceso raiz;
 	private int rafagaTotal = 0;
 	public int t = 0;
 	private String index = "0,0, ";
 	private int barrera = 0;
 	private Proceso cabeza;
-	private int prioridad;
 	private int espera;
 	private String idcola;
 	
-	Cola(int prioridad, int espera, String idcola){
+	Cola(int espera, String idcola){
 		this.raiz = new Proceso();
 		this.raiz.rafaga = -1;
 		this.raiz.id = "-1";
 		this.raiz.sig = raiz;
 		this.raiz.padre = raiz;
-		this.prioridad = prioridad;
 		this.espera = espera;
 		this.idcola = idcola;
 		cabeza = raiz.sig;
@@ -64,9 +62,10 @@ public class Cola {
 			raiz.padre = nuevo;
 			nuevo.padre = aux;
 		}
-		procesos++;
-		rafagaTotal+=rafaga;
+		numProcesos++;
+		this.rafagaTotal+=rafaga;
 	}
+	
 	public void mostrarConsola() {
 		Proceso aux = raiz;
 		while (aux.sig != raiz) {
