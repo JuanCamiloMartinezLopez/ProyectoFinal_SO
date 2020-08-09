@@ -19,5 +19,6 @@ public class Proceso {
     	sig = null;
     	padre = null;
     	ejecutado = false;
+    	tesperaRetorno = 0;
     }
 }
