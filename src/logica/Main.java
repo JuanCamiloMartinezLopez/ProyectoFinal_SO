@@ -5,7 +5,10 @@ import java.util.ArrayList;
 public class Main {
 
 	public static void main(String[] args) {
-		/*Cola prueba= new Cola();
+		/*
+		//Prueba Insertar y atender
+		 
+		Cola prueba= new Cola();
 		prueba.insertar(1, 0);
 		prueba.insertar(2, 1);
 		prueba.insertar(3, 2);
@@ -21,8 +24,9 @@ public class Main {
 		prueba.mostrarConsola();
 		proc= prueba.atender();
 		*/
-
 		
+		/*
+		//Prueba Politica envejecimiento
 		
 		Cola_RoundRobin cl = new Cola_RoundRobin(5);
 		
@@ -61,7 +65,25 @@ public class Main {
 			cl.mostrarConsola();
 			System.out.println("\n----------------------------------\n");
 		}
+		*/
 		
+		//Prueba Procesador/Monitor/ las tres colas al tiempo
+		
+		Procesador procesador= new Procesador();
+		
+		procesador.insertarProcesoCola(3, 0, 0);
+		procesador.insertarProcesoCola(2, 1, 0);
+		procesador.insertarProcesoCola(4, 2, 0);
+		procesador.insertarProcesoCola(4, 0, 1);
+		procesador.insertarProcesoCola(2, 1, 1);
+		procesador.insertarProcesoCola(3, 2, 1);
+		procesador.insertarProcesoCola(2, 0, 2);
+		procesador.insertarProcesoCola(3, 1, 2);
+		procesador.insertarProcesoCola(4, 2, 2);
+		
+		procesador.mostrarColas();
+		
+		procesador.iniciar();
 	}
 
 }

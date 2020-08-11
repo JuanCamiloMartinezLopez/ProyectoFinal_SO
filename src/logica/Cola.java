@@ -17,6 +17,8 @@ public class Cola {
 	@SuppressWarnings("unused")
 	private String idcola;
 	public int tiempoPE;
+	public int IdCola;
+	public String NombreCola;
 
 	Cola() {
 		// inicializacion variables de Cola
@@ -44,6 +46,8 @@ public class Cola {
 		this.caracter++;
 		nuevo.rafaga = rafaga;
 		nuevo.tllegada = tiempo;
+		nuevo.IdCola=this.IdCola;
+		nuevo.NombreCola=this.NombreCola;
 		if (raiz.sig == raiz) {
 			raiz.sig = nuevo;
 			cabeza = nuevo;
@@ -59,6 +63,7 @@ public class Cola {
 		}
 		this.numProcesos++;
 		this.rafagaTotal += rafaga;
+		this.Ordenamiento();
 	}
 
 	// insertar un proceso existente
@@ -68,6 +73,9 @@ public class Cola {
 		}
 		Proceso nuevo = new Proceso();
 		nuevo.rafaga = p.rafaga;
+		nuevo.tllegada = p.tllegada;
+		nuevo.IdCola=this.IdCola;
+		nuevo.NombreCola=this.NombreCola;
 		int tamañoId = p.id.length();
 		if (tamañoId == 1) {
 			nuevo.id = p.id + "1";
@@ -76,7 +84,6 @@ public class Cola {
 			int numeroId = Integer.parseInt(String.valueOf(p.id.charAt(1))) + 1;
 			nuevo.id = String.valueOf(id) + String.valueOf(numeroId);
 		}
-		nuevo.tllegada = p.tllegada;
 		if (raiz.sig == raiz) {
 			raiz.sig = nuevo;
 			cabeza = nuevo;
@@ -102,6 +109,8 @@ public class Cola {
 		Proceso nuevo = new Proceso();
 		nuevo.rafaga = p.rafaga;
 		nuevo.id = p.id;
+		nuevo.IdCola=this.IdCola;
+		nuevo.NombreCola=this.NombreCola;
 		nuevo.tllegada = tiempo;
 		if (raiz.sig == raiz) {
 			raiz.sig = nuevo;
@@ -166,8 +175,14 @@ public class Cola {
 		return procesosPE;
 	}
 
+	// Actualizacion del tiempo
 	public void setTiempo(int tiempo) {
 		this.tiempo = tiempo;
+	}
+	
+	//Ordenamiento
+	public void Ordenamiento() {
+		
 	}
 
 	// muestra en consola los procesos en cola con su informacion

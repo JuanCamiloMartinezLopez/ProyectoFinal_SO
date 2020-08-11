@@ -14,6 +14,8 @@ public class Proceso {
     public boolean ejecutado;
     public int tbloqueo;
     public int tesperaRetorno;
+    public int IdCola;
+    public String NombreCola;
     
     public Proceso(){
     	sig = null;
