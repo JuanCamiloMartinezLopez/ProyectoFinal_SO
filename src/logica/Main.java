@@ -1,33 +1,11 @@
 package logica;
 
+import java.util.ArrayList;
+
 public class Main {
 
 	public static void main(String[] args) {
-		/*Cola sfj = new Cola(15,"A");
-		int tiempo = 0;
-		sfj.insertar(null, 14, tiempo, false);
-		tiempo++;
-		sfj.insertar(null, 20, tiempo, false);
-		tiempo++;
-		sfj.insertar(null, 5, tiempo, false);
-		sfj.insertar(null, 3, tiempo, false);
-		sfj.insertar(null, 4, tiempo, false);
-		Proceso a = new Proceso();
-		a.id = "1,0,B";
-		a.rafaga = 550;
-		a.tllegada = 5;
-		sfj.insertar(a,a.rafaga,tiempo,true);
-		sfj.insertar(null, 4, tiempo, false);
-		a = new Proceso();
-		a.id = "5,0,B";
-		a.rafaga = 70;
-		a.tllegada = 3;
-		sfj.insertar(a,a.rafaga,tiempo,false);
-		sfj.mostrarConsola();
-		 */
-		
-		//Procesador proc= new Procesador();
-		Cola prueba= new Cola();
+		/*Cola prueba= new Cola();
 		prueba.insertar(1, 0);
 		prueba.insertar(2, 1);
 		prueba.insertar(3, 2);
@@ -42,7 +20,48 @@ public class Main {
 		System.out.println("\nProceso Atendido: "+proc.id + " | " + proc.tllegada + " | " + proc.rafaga+"\n");
 		prueba.mostrarConsola();
 		proc= prueba.atender();
+		*/
 
+		
+		
+		Cola_RoundRobin cl = new Cola_RoundRobin(5);
+		
+		cl.insertar(5, 0);
+		cl.insertar(2, 1);
+		cl.insertar(3, 2);
+		cl.insertar(4, 3);
+		cl.insertar(5, 4);
+		cl.insertar(2, 5);
+		cl.insertar(3, 5);
+		cl.insertar(4, 5);
+		cl.insertar(5, 6);
+		cl.insertar(2, 7);
+		cl.insertar(3, 8);
+		cl.insertar(4, 9);
+		cl.mostrarConsola();
+		
+		System.out.println("\nComienza Simulacion\n");
+		
+		for (int tiempo = 0 ; tiempo < 20 ; tiempo ++) {
+			System.out.println("\n----------------------------------\n");
+			System.out.println("tiempo: "+tiempo);
+			cl.setTiempo(tiempo);
+			ArrayList<Proceso> procesos= cl.procesosPoliticaEnvejecimiento();
+			if(procesos==null) {
+				System.out.println("\nNo hay procesos para salir por politica de envejecimiento\n");
+			}else {
+				System.out.println("\nhay "+procesos.size()+" procesos para salir por politica de envejecimiento\n");
+				for(int t=0;t<procesos.size();t++) {
+					Proceso a= procesos.get(t);
+					System.out.println("Proceso "+a.id + "| Rafaga "+a.rafaga);
+				}
+			}
+			
+			System.out.println("\nCola Actualmente\n");
+			cl.mostrarConsola();
+			System.out.println("\n----------------------------------\n");
+		}
+		
 	}
 
 }
