@@ -1,5 +1,7 @@
 package logica;
 
+import java.util.ArrayList;
+
 public class Monitor {
 	private Cola[] colas= new Cola[4];
 	@SuppressWarnings("unused")
@@ -17,6 +19,10 @@ public class Monitor {
 	//metodo para actualizar el tiempo
 	public void actualizarTiempo(int tiempo) {
 		this.tiempo=tiempo;
+		for(Cola cola:colas) {
+			cola.setTiempo(this.tiempo);
+		}
+		this.verificarPE();
 		
 	}
 	
@@ -43,6 +49,17 @@ public class Monitor {
 	
 	//metodo para verificar politica de envejecimiento y cambiar procesos de cola si es necesario
 	public void verificarPE() {
+		for(int c=2; c>0;c--) {
+			Cola cola=colas[c];
+			ArrayList<Proceso> procesosEnvejecidos=cola.procesosPoliticaEnvejecimiento();
+			if(procesosEnvejecidos==null)continue;
+			Cola nuevaCola=colas[c-1];
+			System.out.println("Cola "+cola.NombreCola+ " con "+procesosEnvejecidos.size()+ " procesos para pasar a la Cola "+nuevaCola.NombreCola+" al tiempo: "+this.tiempo);
+			for(Proceso proceso: procesosEnvejecidos) {
+				nuevaCola.insertar(proceso, this.tiempo);
+				System.out.println("Proceso "+proceso.id+" pasa de la cola "+cola.NombreCola+" a la cola "+nuevaCola.NombreCola);
+			}
+		}
 		
 	}
 	

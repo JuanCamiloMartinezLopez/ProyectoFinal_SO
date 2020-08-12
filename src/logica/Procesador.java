@@ -38,8 +38,6 @@ public class Procesador implements Runnable {
 
 	// Ejecuta la rafaga del proceso, si hay, si no, solicita un proceso
 	public void EjecutarProceso() {
-		System.out.println("\n------------------------------");
-		System.out.println("tiempo: " + this.tiempo);
 		this.mostrarColas();
 		if (this.procesoEjecutar == null) {
 			System.out.println("No hay proceso para ejecutar, obteniendo Proceso....");
@@ -49,15 +47,13 @@ public class Procesador implements Runnable {
 			System.out.println("Ejecutando el proceso " + this.procesoEjecutar.id +" con rafaga restante "+this.procesoEjecutar.rafaga+" de la cola "+this.procesoEjecutar.NombreCola);
 			this.procesoEjecutar.rafaga--;
 			if (this.procesoEjecutar.rafaga <= 0) {
-				System.out.println("Proceso "+this.procesoEjecutar.id+"de la cola "+this.procesoEjecutar.NombreCola +" ejecutado con exito");
+				System.out.println("Proceso "+this.procesoEjecutar.id+" de la cola "+this.procesoEjecutar.NombreCola +" ejecutado con exito");
 				this.procesoEjecutar = null;
 			}
 		}else {
 			System.out.println("No hay mas procesos en las colas");
 			this.detener();
 		}
-		
-		System.out.println("\n------------------------------");
 	}
 
 	// muestra en consola la informacion de las colas
@@ -70,8 +66,9 @@ public class Procesador implements Runnable {
 		System.out.println("\nProcesador iniciado\n");
 
 		while (!this.stop) {
+			System.out.println("\n------------------------------");
+			System.out.println("tiempo: " + this.tiempo);
 			try {
-
 				this.monitor.actualizarTiempo(this.tiempo);
 				this.EjecutarProceso();
 				this.tiempo++;
@@ -80,6 +77,7 @@ public class Procesador implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			System.out.println("\n------------------------------");
 		}
 		System.out.println("\nProcesador terminado al tiempo: " + this.tiempo);
 	}

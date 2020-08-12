@@ -99,6 +99,7 @@ public class Cola {
 		}
 		this.numProcesos++;
 		this.rafagaTotal += nuevo.rafaga;
+		this.Ordenamiento();
 	}
 
 	// insertar un proceso existente con nuevo tiempo de llegada
@@ -127,7 +128,7 @@ public class Cola {
 		}
 		this.numProcesos++;
 		this.rafagaTotal += nuevo.rafaga;
-
+		this.Ordenamiento();
 	}
 
 	// atender el primer proceso en la cola
@@ -153,7 +154,8 @@ public class Cola {
 		}
 		return false;
 	}
-
+	
+	// Retorna los procesos que deben cambiar de cola por politica de envejecimiento 
 	public ArrayList<Proceso> procesosPoliticaEnvejecimiento() {
 		ArrayList<Proceso> procesosPE = new ArrayList<Proceso>();
 		Proceso aux = this.raiz.sig;
@@ -180,9 +182,29 @@ public class Cola {
 		this.tiempo = tiempo;
 	}
 	
-	//Ordenamiento
+	//Ordenamiento para sobreescribir segun politica en las clases hijas
 	public void Ordenamiento() {
 		
+	}
+	
+	public void calcularTiemposProcesos() {
+		Proceso aux= this.raiz.sig;
+		aux.tcomienzo=this.tiempo;
+		aux.tfinal=aux.rafaga+aux.tcomienzo;
+		aux.tretorno=aux.tfinal-aux.tllegada;
+		aux.tespera=aux.tretorno-aux.rafaga;
+		aux=aux.sig;
+		while(aux!=this.raiz) {
+			//tiempo comienzo
+			aux.tcomienzo=aux.padre.tfinal;
+			//tiempo final
+			aux.tfinal=aux.rafaga+aux.tcomienzo;
+			//tiempo retorno
+			aux.tretorno=aux.tfinal-aux.tllegada;
+			//tiempo espera
+			aux.tespera=aux.tretorno-aux.rafaga;
+			aux=aux.sig;
+		}
 	}
 
 	// muestra en consola los procesos en cola con su informacion
