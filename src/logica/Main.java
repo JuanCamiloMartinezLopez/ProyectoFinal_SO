@@ -67,6 +67,7 @@ public class Main {
 		}
 		*/
 		
+		
 		//Prueba Procesador/Monitor/ las tres colas al tiempo
 		
 		Procesador procesador= new Procesador();
@@ -84,6 +85,18 @@ public class Main {
 		procesador.mostrarColas();
 		
 		procesador.iniciar();
+		
+		
+		/*
+		//Prueba Ordenamiento SFJ. Para probarlo, descomentar todo el ordenamiento en SFJ
+		
+		Cola cola= new Cola_SFJ(0,"Prueba",0);
+		cola.insertar(4, 0);
+		cola.insertar(1, 0);
+		cola.insertar(3, 0);
+		cola.insertar(5, 0);
+		cola.insertar(2, 0);
+		*/
 	}
 
 }

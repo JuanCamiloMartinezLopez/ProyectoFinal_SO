@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Cola {
 	@SuppressWarnings("unused")
 	private int numProcesos;
-	private Proceso raiz;
+	public Proceso raiz;
 	@SuppressWarnings("unused")
 	private int rafagaTotal;
 	public int tiempo;
@@ -214,9 +214,7 @@ public class Cola {
 		while (aux.sig != this.raiz /* i>0 */) {
 			// i--;
 			aux = aux.sig;
-			System.out.println(aux.padre.id + " | " + aux.sig.id + " | " + aux.id + " | " + aux.tllegada + " | "
-					+ aux.rafaga + " | " + aux.tcomienzo + " | " + aux.tfinal + " | " + aux.tretorno + " | "
-					+ aux.tespera + " | " + aux.ejecutado);
+			System.out.println(aux.toString());
 		}
 	}
 }

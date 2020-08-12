@@ -10,7 +10,7 @@ public class Monitor {
 	public Monitor() {
 		//inicializacion variables del monitor
 		tiempo=0;
-		colas[0] = new Cola_RoundRobin(0,"RoundRobin",0);
+		colas[0] = new Cola_RoundRobin(0,"RoundRobin",0,4);
 		colas[1] = new Cola_SFJ(1,"SFJ",10);
 		colas[2] = new Cola_FCFS(2,"FCFS",20);
 		colas[3] = new Cola_Bloqueados(3);
