@@ -72,7 +72,7 @@ public class Main {
 		
 		Procesador procesador= new Procesador();
 		
-		procesador.insertarProcesoCola(3, 0, 0);
+		procesador.insertarProcesoCola(10, 0, 0);
 		procesador.insertarProcesoCola(2, 1, 0);
 		procesador.insertarProcesoCola(4, 2, 0);
 		procesador.insertarProcesoCola(4, 0, 1);
@@ -97,6 +97,31 @@ public class Main {
 		cola.insertar(5, 0);
 		cola.insertar(2, 0);
 		*/
+		
+		/*
+		//Prueba cola bloqueos
+		
+		Cola_Bloqueados prueba=new Cola_Bloqueados(3);
+		Proceso p= new Proceso();
+		p.id="A";
+		p.rafaga=4;
+		p.tllegada=0;
+		prueba.bloquear(p);
+		int t=0;
+		while(true) {
+			prueba.setTiempo(t);
+			System.out.println("tiempo "+t);
+			Proceso d=prueba.desbloquear();
+			if(d==null) {
+				System.out.println("Aun en la cola");
+			}else {
+				System.out.println(d.id);
+				break;
+			}
+			t++;
+		}
+		*/
+		
 	}
 
 }

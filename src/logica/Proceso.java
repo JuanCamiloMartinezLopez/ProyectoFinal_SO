@@ -17,16 +17,22 @@ public class Proceso {
     public int tesperaRetorno;
     public int IdCola;
     public String NombreCola;
+    public int rafagaEjecutada;
     
     public Proceso(){
     	sig = null;
     	padre = null;
     	ejecutado = false;
+    	rafagaEjecutada= 0;
     }
     
     public int getRafaga() {
 		return rafaga;
 	}
+    
+    public int rafagaRestante() {
+    	return rafaga-rafagaEjecutada;
+    }
 
 	public static Comparator<Proceso> ProcesoRafaga = new Comparator<Proceso>() {
 
@@ -47,7 +53,12 @@ public class Proceso {
 	//+ aux.tespera + " | " + aux.ejecutado
     @Override
     public String toString() {
-        return "[ Padre: "+this.padre.id+", Sig: "+this.sig.id+", id: " + this.id +", tllegada: "+ this.tllegada+ ", rafaga: " + this.rafaga +
-        		", tComienzo: "+this.tcomienzo +", tFinal: "+this.tfinal+", tRetorno: "+this.tretorno+", tEspera: "+this.tespera +"]";
+    	try {
+    		return "[ Padre: "+this.padre.id+", Sig: "+this.sig.id+", id: " + this.id +", tllegada: "+ this.tllegada+ ", rafaga: " + this.rafaga +
+            		", tComienzo: "+this.tcomienzo +", tFinal: "+this.tfinal+", tRetorno: "+this.tretorno+", tEspera: "+this.tespera +"]";
+    	}catch(Exception e) {
+    		System.out.println(e.toString());
+    	}
+        return "Falló";
     }
 }

@@ -24,7 +24,7 @@ public class Cola {
 		// inicializacion variables de Cola
 		this.numProcesos = 0;
 		this.rafagaTotal = 0;
-		this.tiempo = 0;
+		this.tiempo = -1;
 		this.caracter = 65;
 
 		// inicializacion raiz
@@ -144,6 +144,7 @@ public class Cola {
 		sig.padre=padre;
 		cabeza=sig;
 		this.numProcesos--;
+		this.calcularTiemposProcesos();
 		return proceso;
 	}
 
@@ -180,6 +181,7 @@ public class Cola {
 	// Actualizacion del tiempo
 	public void setTiempo(int tiempo) {
 		this.tiempo = tiempo;
+		this.calcularTiemposProcesos();
 	}
 	
 	//Ordenamiento para sobreescribir segun politica en las clases hijas
@@ -189,7 +191,7 @@ public class Cola {
 	
 	public void calcularTiemposProcesos() {
 		Proceso aux= this.raiz.sig;
-		aux.tcomienzo=this.tiempo;
+		aux.tcomienzo=this.tiempo+1;
 		aux.tfinal=aux.rafaga+aux.tcomienzo;
 		aux.tretorno=aux.tfinal-aux.tllegada;
 		aux.tespera=aux.tretorno-aux.rafaga;
@@ -216,5 +218,9 @@ public class Cola {
 			aux = aux.sig;
 			System.out.println(aux.toString());
 		}
+	}
+
+	public int getNumProcesos() {
+		return numProcesos;
 	}
 }

@@ -10,14 +10,51 @@ public class Cola_RoundRobin extends Cola{
 		this.Quantum=Quantum;
 	}
 	
+	public int getQuantum() {
+		return Quantum;
+	}
+	
 	public void calcularTiemposProcesos() {
-		System.out.println("Calculo de tiempos para el round robin con el Quantum: "+ this.Quantum);
+		//System.out.println("Calculo de tiempos para el round robin con el Quantum: "+ this.Quantum);
+		Proceso aux= this.raiz.sig;
+		aux.tcomienzo=this.tiempo+1;
+		int rafaga=aux.rafaga;
+		if(rafaga<this.Quantum) {
+			aux.tfinal=aux.rafaga+aux.tcomienzo;
+		}else {
+			aux.tfinal=this.Quantum+aux.tcomienzo;
+		}
+		aux.tretorno=aux.tfinal-aux.tllegada;
+		aux.tespera=aux.tretorno-aux.rafaga;
+		if(aux.tespera<0) {
+			aux.tespera=0;
+		}
+		aux=aux.sig;
+		while(aux!=this.raiz) {
+			rafaga=aux.rafaga;
+			//tiempo comienzo
+			aux.tcomienzo=aux.padre.tfinal;
+			//tiempo final
+			if(rafaga<this.Quantum) {
+				aux.tfinal=aux.rafaga+aux.tcomienzo;
+			}else {
+				aux.tfinal=this.Quantum+aux.tcomienzo;
+			}
+			//tiempo retorno
+			aux.tretorno=aux.tfinal-aux.tllegada;
+			//tiempo espera
+			aux.tespera=aux.tretorno-aux.rafaga;
+			if(aux.tespera<0) {
+				aux.tespera=0;
+			}
+			aux=aux.sig;
+		}
 	}
 	
 	//Ordenamiento Politica Round Robin
 	public void Ordenamiento() {
 		// Politica con un Quantum limite para la ejecucion del proceso
-		System.out.println("Ordenamiento Politica Round Robin");
+		//System.out.println("Ordenamiento Politica Round Robin");
 		this.calcularTiemposProcesos();
 	}
 

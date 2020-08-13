@@ -23,6 +23,7 @@ public class Monitor {
 			cola.setTiempo(this.tiempo);
 		}
 		this.verificarPE();
+		this.verificarBloquados();
 		
 	}
 	
@@ -63,11 +64,39 @@ public class Monitor {
 		
 	}
 	
+	//Revisa si hay bloqueados para reingresar a su cola
+	public void verificarBloquados() {
+		Cola_Bloqueados colaBloqueados= (Cola_Bloqueados) colas[3];
+		Proceso proceso= colaBloqueados.desbloquear();
+		if(proceso!=null) {
+			System.out.println("Reinsertardo proceso bloqueado "+proceso.id +" a la cola "+proceso.NombreCola);
+			Cola cola= colas[0];
+			cola.insertar(proceso, this.tiempo);
+		}
+	}
+	
+	//bloquear un proceso
+	public void bloquearProceso(Proceso p) {
+		System.out.println("bloqueado"+p.toString());
+		Cola_Bloqueados colaBloqueados= (Cola_Bloqueados) colas[3];
+		colaBloqueados.bloquear(p);
+	}
+	
+	//retorna el Quantum de la cola Round Robin
+	public int QuantumColaRR() {
+		Cola_RoundRobin cola=(Cola_RoundRobin) colas[0];
+		return cola.getQuantum();
+	}
+	
+	public void reinsertarProcesoRR(Proceso p) {
+		colas[0].insertar(p);
+	}
+	
 	public void mostrarColasConsola() {
-		for(int id= 0; id <3; id++) {
+		for(int id= 0; id <4; id++) {
 			Cola cola=colas[id];
 			if(cola.colaVacia())continue;
-			System.out.println("\nCola "+cola.NombreCola);
+			System.out.println("\nCola: "+cola.NombreCola +"| numero de procesos: "+cola.getNumProcesos());
 			cola.mostrarConsola();
 		}
 	}
