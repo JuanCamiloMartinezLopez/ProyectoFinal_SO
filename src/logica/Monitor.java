@@ -70,7 +70,7 @@ public class Monitor {
 		Proceso proceso= colaBloqueados.desbloquear();
 		if(proceso!=null) {
 			System.out.println("Reinsertardo proceso bloqueado "+proceso.id +" a la cola "+proceso.NombreCola);
-			Cola cola= colas[0];
+			Cola cola= colas[proceso.IdCola];
 			cola.insertar(proceso, this.tiempo);
 		}
 	}
