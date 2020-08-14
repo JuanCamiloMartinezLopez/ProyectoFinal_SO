@@ -50,7 +50,7 @@ public class Cola_RoundRobin extends Cola{
 			//tiempo retorno
 			aux.tretorno=aux.tfinal-aux.tllegada;
 			//tiempo espera
-			System.out.println(aux.rafagaEjecutada+" rafaga ejecurada");
+			//System.out.println(aux.rafagaEjecutada+" rafaga ejecurada");
 			if(rafaga < this.Quantum) {
 				aux.tespera = aux.tretorno-aux.rafaga-aux.rrejecutada;
 			}else {
