@@ -9,6 +9,8 @@ import java.awt.TextArea;
 import java.awt.Canvas;
 import java.awt.Color;
 import javax.swing.JTable;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.JLabel;
 import java.awt.Button;
 import java.awt.TextField;
@@ -117,33 +119,48 @@ public class Gui {
 		frame.getContentPane().add(botonBloquear);
 
 		Button botonInsertar = new Button("Insertar");
-		botonInsertar.setBounds(255, 670, 90, 22);
+		botonInsertar.setBounds(361, 670, 90, 22);
 		frame.getContentPane().add(botonInsertar);
 
 		Button botonIniciar = new Button("Iniciar");
-		botonIniciar.setBounds(417, 670, 90, 22);
+		botonIniciar.setBounds(499, 670, 90, 22);
 		frame.getContentPane().add(botonIniciar);
 
 		Button botonPausar = new Button("Pausar");
-		botonPausar.setBounds(583, 670, 90, 22);
+		botonPausar.setBounds(660, 670, 90, 22);
 		frame.getContentPane().add(botonPausar);
 
 		JRadioButton RBRoundRobin = new JRadioButton("Round Robin");
 		RBRoundRobin.setSelected(true);
-		RBRoundRobin.setBounds(10, 670, 108, 16);
+		RBRoundRobin.setFont(new Font("Arial", Font.PLAIN, 11));
+		RBRoundRobin.setBounds(10, 670, 98, 16);
 		frame.getContentPane().add(RBRoundRobin);
 
 		JRadioButton RBSJF = new JRadioButton("SJF");
-		RBSJF.setBounds(120, 670, 54, 16);
+		RBSJF.setFont(new Font("Arial", Font.PLAIN, 11));
+		RBSJF.setBounds(110, 670, 54, 16);
 		frame.getContentPane().add(RBSJF);
 
 		JRadioButton RBFCFS = new JRadioButton("FCFS");
-		RBFCFS.setBounds(195, 670, 54, 16);
+		RBFCFS.setFont(new Font("Arial", Font.PLAIN, 11));
+		RBFCFS.setBounds(166, 670, 54, 16);
 		frame.getContentPane().add(RBFCFS);
 
 		ButtonGroup nomColas = new ButtonGroup();
 		nomColas.add(RBRoundRobin);
 		nomColas.add(RBSJF);
 		nomColas.add(RBFCFS);
+		
+		Label labelRafaga = new Label("Rafaga:");
+		labelRafaga.setFont(new Font("Arial", Font.PLAIN, 13));
+		labelRafaga.setBounds(226, 670, 54, 22);
+		frame.getContentPane().add(labelRafaga);
+		
+		SpinnerModel modeloSpinner = new SpinnerNumberModel(1,1,100,1);
+		JSpinner spinnerRafaga = new JSpinner(modeloSpinner);
+		spinnerRafaga.setBounds(275, 670, 55, 22);
+		frame.getContentPane().add(spinnerRafaga);
+		
+		
 	}
 }
