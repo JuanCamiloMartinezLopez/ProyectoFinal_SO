@@ -48,6 +48,13 @@ public class Cola {
 		nuevo.tllegada = tiempo;
 		nuevo.IdCola=this.IdCola;
 		nuevo.NombreCola=this.NombreCola;
+		if (nuevo.IdCola == 1) {
+			nuevo.ColaProviene = "RR";
+		}else if(nuevo.IdCola == 2 ) {
+			nuevo.ColaProviene = "SJF";
+		}else if(nuevo.IdCola == 3) {
+			nuevo.ColaProviene = "FCFS";
+		}
 		if (raiz.sig == raiz) {
 			raiz.sig = nuevo;
 			cabeza = nuevo;
@@ -77,6 +84,7 @@ public class Cola {
 		nuevo.IdCola=this.IdCola;
 		nuevo.NombreCola=this.NombreCola;
 		nuevo.rrejecutada = p.rrejecutada;
+		nuevo.ColaProviene = p.ColaProviene;
 		int tamañoId = p.id.length();
 		if (tamañoId == 1) {
 			nuevo.id = p.id + "1";
@@ -114,6 +122,8 @@ public class Cola {
 		nuevo.IdCola=this.IdCola;
 		nuevo.NombreCola=this.NombreCola;
 		nuevo.tllegada = tiempo;
+		nuevo.ColaProviene = p.ColaProviene;
+		
 		if (raiz.sig == raiz) {
 			raiz.sig = nuevo;
 			cabeza = nuevo;
