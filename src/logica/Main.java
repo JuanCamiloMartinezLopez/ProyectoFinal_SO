@@ -73,6 +73,13 @@ public class Main {
 		Procesador procesador= new Procesador();
 		
 		procesador.insertarProcesoCola(10, 0, 0);
+		procesador.insertarProcesoCola(5, 1, 0);
+		procesador.insertarProcesoCola(9, 2, 0);
+		procesador.insertarProcesoCola(4, 3, 0);
+		procesador.insertarProcesoCola(3, 4, 0);
+        
+		/*
+		procesador.insertarProcesoCola(10, 0, 0);
 		procesador.insertarProcesoCola(2, 1, 0);
 		procesador.insertarProcesoCola(4, 2, 0);
 		procesador.insertarProcesoCola(4, 0, 1);
@@ -81,7 +88,8 @@ public class Main {
 		procesador.insertarProcesoCola(2, 0, 2);
 		procesador.insertarProcesoCola(3, 1, 2);
 		procesador.insertarProcesoCola(4, 2, 2);
-		
+	
+		*/
 		procesador.mostrarColas();
 		
 		procesador.iniciar();
