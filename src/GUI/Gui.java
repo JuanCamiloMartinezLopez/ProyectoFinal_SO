@@ -8,9 +8,15 @@ import java.awt.Font;
 import java.awt.TextArea;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JTable;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableModel;
+
+import javafx.scene.control.TableColumn;
+
 import javax.swing.JLabel;
 import java.awt.Button;
 import java.awt.TextField;
@@ -27,7 +33,6 @@ public class Gui {
 
 	private JFrame frame;
 	private JTable tabla_final;
-	private JTable grannt;
 	private JTable tablaRoundRobin;
 	private JTable tablaSJF;
 	private JTable tablaFCFS;
@@ -60,107 +65,138 @@ public class Gui {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		String[] columnaTablaFinal = { "ID cola", "Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final",
+				"T.Retorno", "T.Espera" };
+		String[][] filasTablaFinal = {
+				{ "ID cola", "Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final", "T.Retorno", "T.Espera" } };
+		String[] columnaTabla = { "ID cola", "Id proceso", "T.LLegada", "Rafaga", "T.En Cola" };
+		String[][] filasTabla = { { "ID cola", "Id proceso", "T.LLegada", "Rafaga", "T.En Cola" } };
+		String[] columnaTablaBloqueados = { "ID cola", "Id proceso", "T.En cola" };
+		String[][] filasTablaBloqueados = { { "ID cola", "Id proceso", "T.En cola" } };
+
 		frame = new JFrame();
-		frame.setBounds(0, 0, 923, 766);
+		frame.setBounds(0, 0, 1400, 766);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		Label labelTitulo = new Label("Procesador");
 		labelTitulo.setFont(new Font("Arial", Font.PLAIN, 23));
-		labelTitulo.setBounds(255, 10, 123, 32);
+		labelTitulo.setBounds(514, 10, 123, 32);
 		frame.getContentPane().add(labelTitulo);
 
-		tabla_final = new JTable();
-		tabla_final.setBounds(10, 48, 643, 168);
+		DefaultTableModel modeloTablaFinal = new DefaultTableModel(filasTablaFinal, columnaTablaFinal);
+		DefaultTableModel modeloTablaRR = new DefaultTableModel(filasTabla, columnaTabla);
+		DefaultTableModel modeloTablaSJF = new DefaultTableModel(filasTabla, columnaTabla);
+		DefaultTableModel modeloTablaFCFS = new DefaultTableModel(filasTabla, columnaTabla);
+		DefaultTableModel modeloTablaBloqueado = new DefaultTableModel(filasTablaBloqueados, columnaTablaBloqueados);
+
+		tabla_final = new JTable(modeloTablaFinal);
+		tabla_final.setBounds(233, 48, 643, 168);
 		frame.getContentPane().add(tabla_final);
 
-		grannt = new JTable();
-		grannt.setBounds(10, 225, 643, 155);
+		Canvas grannt = new Canvas();
+		grannt.setBounds(233, 222, 643, 163);
 		frame.getContentPane().add(grannt);
 
 		Label labelRoundRobin = new Label("Round Robin");
 		labelRoundRobin.setFont(new Font("Arial", Font.PLAIN, 18));
-		labelRoundRobin.setBounds(80, 386, 123, 27);
+		labelRoundRobin.setBounds(157, 391, 123, 27);
 		frame.getContentPane().add(labelRoundRobin);
 
 		Label labelSJF = new Label("SJF");
 		labelSJF.setFont(new Font("Arial", Font.PLAIN, 18));
-		labelSJF.setBounds(428, 391, 37, 22);
+		labelSJF.setBounds(678, 391, 37, 22);
 		frame.getContentPane().add(labelSJF);
 
 		Label labelFCFS = new Label("FCFS");
 		labelFCFS.setFont(new Font("Arial", Font.PLAIN, 18));
-		labelFCFS.setBounds(736, 386, 62, 22);
+		labelFCFS.setBounds(1112, 391, 62, 22);
 		frame.getContentPane().add(labelFCFS);
 
-		tablaRoundRobin = new JTable();
-		tablaRoundRobin.setBounds(10, 417, 273, 236);
+		tablaRoundRobin = new JTable(modeloTablaRR);
+		tablaRoundRobin.setBounds(10, 417, 440, 236);
 		frame.getContentPane().add(tablaRoundRobin);
+		String[] n = { "1", "2", "3", "4", "5" };
 
-		tablaSJF = new JTable();
-		tablaSJF.setBounds(316, 417, 273, 236);
+		tablaSJF = new JTable(modeloTablaSJF);
+		tablaSJF.setBounds(460, 417, 440, 236);
 		frame.getContentPane().add(tablaSJF);
 
-		tablaFCFS = new JTable();
-		tablaFCFS.setBounds(624, 417, 273, 236);
+		tablaFCFS = new JTable(modeloTablaFCFS);
+		tablaFCFS.setBounds(910, 417, 450, 236);
 		frame.getContentPane().add(tablaFCFS);
 
 		Label labelBloquedo = new Label("Bloqueados");
 		labelBloquedo.setFont(new Font("Arial", Font.PLAIN, 18));
-		labelBloquedo.setBounds(736, 20, 123, 22);
+		labelBloquedo.setBounds(975, 20, 123, 22);
 		frame.getContentPane().add(labelBloquedo);
 
-		tablaBloqueados = new JTable();
-		tablaBloqueados.setBounds(663, 48, 234, 303);
+		tablaBloqueados = new JTable(modeloTablaBloqueado);
+		tablaBloqueados.setBounds(917, 48, 234, 303);
 		frame.getContentPane().add(tablaBloqueados);
 
 		Button botonBloquear = new Button("Bloquear");
-		botonBloquear.setBounds(736, 357, 90, 22);
+		botonBloquear.setBounds(995, 363, 90, 22);
 		frame.getContentPane().add(botonBloquear);
 
 		Button botonInsertar = new Button("Insertar");
-		botonInsertar.setBounds(361, 670, 90, 22);
+		botonInsertar.setBounds(563, 670, 90, 22);
 		frame.getContentPane().add(botonInsertar);
 
 		Button botonIniciar = new Button("Iniciar");
-		botonIniciar.setBounds(499, 670, 90, 22);
+		botonIniciar.setBounds(782, 670, 90, 22);
 		frame.getContentPane().add(botonIniciar);
 
 		Button botonPausar = new Button("Pausar");
-		botonPausar.setBounds(660, 670, 90, 22);
+		botonPausar.setBounds(1061, 670, 90, 22);
 		frame.getContentPane().add(botonPausar);
 
 		JRadioButton RBRoundRobin = new JRadioButton("Round Robin");
 		RBRoundRobin.setSelected(true);
 		RBRoundRobin.setFont(new Font("Arial", Font.PLAIN, 11));
-		RBRoundRobin.setBounds(10, 670, 98, 16);
+		RBRoundRobin.setBounds(133, 670, 98, 16);
 		frame.getContentPane().add(RBRoundRobin);
 
 		JRadioButton RBSJF = new JRadioButton("SJF");
 		RBSJF.setFont(new Font("Arial", Font.PLAIN, 11));
-		RBSJF.setBounds(110, 670, 54, 16);
+		RBSJF.setBounds(233, 670, 54, 16);
 		frame.getContentPane().add(RBSJF);
 
 		JRadioButton RBFCFS = new JRadioButton("FCFS");
 		RBFCFS.setFont(new Font("Arial", Font.PLAIN, 11));
-		RBFCFS.setBounds(166, 670, 54, 16);
+		RBFCFS.setBounds(316, 670, 54, 16);
 		frame.getContentPane().add(RBFCFS);
 
 		ButtonGroup nomColas = new ButtonGroup();
 		nomColas.add(RBRoundRobin);
 		nomColas.add(RBSJF);
 		nomColas.add(RBFCFS);
-		
+
 		Label labelRafaga = new Label("Rafaga:");
 		labelRafaga.setFont(new Font("Arial", Font.PLAIN, 13));
-		labelRafaga.setBounds(226, 670, 54, 22);
+		labelRafaga.setBounds(426, 670, 54, 22);
 		frame.getContentPane().add(labelRafaga);
-		
-		SpinnerModel modeloSpinner = new SpinnerNumberModel(1,1,100,1);
+
+		SpinnerModel modeloSpinner = new SpinnerNumberModel(1, 1, 100, 1);
 		JSpinner spinnerRafaga = new JSpinner(modeloSpinner);
-		spinnerRafaga.setBounds(275, 670, 55, 22);
+		spinnerRafaga.setBounds(486, 670, 55, 22);
 		frame.getContentPane().add(spinnerRafaga);
-		
-		
+
+		Label labelidColaRR = new Label("ID Round Robin: 1");
+		labelidColaRR.setFont(new Font("Arial", Font.PLAIN, 14));
+		labelidColaRR.setAlignment(Label.RIGHT);
+		labelidColaRR.setBounds(273, 391, 143, 22);
+		frame.getContentPane().add(labelidColaRR);
+
+		Label labelidColaSJF = new Label("ID SJF: 2");
+		labelidColaSJF.setFont(new Font("Arial", Font.PLAIN, 14));
+		labelidColaSJF.setBounds(732, 391, 62, 22);
+		frame.getContentPane().add(labelidColaSJF);
+
+		Label labelidColaFCFS = new Label("ID FCFS: 3");
+		labelidColaFCFS.setFont(new Font("Arial", Font.PLAIN, 14));
+		labelidColaFCFS.setBounds(1193, 391, 84, 22);
+		frame.getContentPane().add(labelidColaFCFS);
+
 	}
 }
