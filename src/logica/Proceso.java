@@ -20,6 +20,7 @@ public class Proceso {
 	public String NombreCola;
 	public int rafagaEjecutada;
 	public int rrejecutada;
+	public String ColaProviene;
 
 	public Proceso() {
 		sig = null;
@@ -27,6 +28,7 @@ public class Proceso {
 		ejecutado = false;
 		rafagaEjecutada = 0;
 		rrejecutada = 0;
+		ColaProviene = "";
 	}
 
 	public int getRafaga() {

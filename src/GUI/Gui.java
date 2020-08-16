@@ -65,14 +65,14 @@ public class Gui {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		String[] columnaTablaFinal = { "ID cola", "Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final",
-				"T.Retorno", "T.Espera" };
-		String[][] filasTablaFinal = {
-				{ "ID cola", "Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final", "T.Retorno", "T.Espera" } };
-		String[] columnaTabla = { "ID cola", "Id proceso", "T.LLegada", "Rafaga", "T.En Cola" };
-		String[][] filasTabla = { { "ID cola", "Id proceso", "T.LLegada", "Rafaga", "T.En Cola" } };
-		String[] columnaTablaBloqueados = { "ID cola", "Id proceso", "T.En cola" };
-		String[][] filasTablaBloqueados = { { "ID cola", "Id proceso", "T.En cola" } };
+		String[] columnaTablaFinal = {"Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final",
+				"T.Retorno", "T.Espera","Cola Origen", "Cola Final"};
+		String[][] filasTablaFinal = {{ "Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final",
+				"T.Retorno", "T.Espera","Cola Origen", "Cola Final"} };
+		String[] columnaTabla = {"Id proceso","Rafaga","T.LLegada","Cola Origen","T.En Cola"};
+		String[][] filasTabla = { {"Id proceso","Rafaga","T.LLegada","Cola Origen","T.En Cola"} };
+		String[] columnaTablaBloqueados = { "Id proceso","Cola", "T.En cola" };
+		String[][] filasTablaBloqueados = {{"Id proceso","Cola", "T.En cola"}};
 
 		frame = new JFrame();
 		frame.setBounds(0, 0, 1400, 766);
@@ -182,20 +182,20 @@ public class Gui {
 		spinnerRafaga.setBounds(486, 670, 55, 22);
 		frame.getContentPane().add(spinnerRafaga);
 
-		Label labelidColaRR = new Label("ID Round Robin: 1");
+		Label labelidColaRR = new Label("Prioridad Round Robin: 1");
 		labelidColaRR.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelidColaRR.setAlignment(Label.RIGHT);
-		labelidColaRR.setBounds(273, 391, 143, 22);
+		labelidColaRR.setBounds(273, 391, 177, 22);
 		frame.getContentPane().add(labelidColaRR);
 
-		Label labelidColaSJF = new Label("ID SJF: 2");
+		Label labelidColaSJF = new Label("Prioridad SJF: 2");
 		labelidColaSJF.setFont(new Font("Arial", Font.PLAIN, 14));
-		labelidColaSJF.setBounds(732, 391, 62, 22);
+		labelidColaSJF.setBounds(732, 391, 123, 22);
 		frame.getContentPane().add(labelidColaSJF);
 
-		Label labelidColaFCFS = new Label("ID FCFS: 3");
+		Label labelidColaFCFS = new Label("Prioridad FCFS: 3");
 		labelidColaFCFS.setFont(new Font("Arial", Font.PLAIN, 14));
-		labelidColaFCFS.setBounds(1193, 391, 84, 22);
+		labelidColaFCFS.setBounds(1193, 391, 150, 22);
 		frame.getContentPane().add(labelidColaFCFS);
 
 	}
