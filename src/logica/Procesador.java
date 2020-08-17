@@ -9,10 +9,11 @@ public class Procesador implements Runnable {
 	private Monitor monitor;
 	private Proceso procesoEjecutar = null;
 	private Scanner lector;
+	public Cola_Final cola = new Cola_Final();
 
 	public Procesador() {
 		this.monitor = new Monitor();
-		this.lector= new Scanner(System.in);
+		this.lector = new Scanner(System.in);
 	}
 
 	public void iniciar() {
@@ -45,6 +46,7 @@ public class Procesador implements Runnable {
 		if (this.procesoEjecutar == null) {
 			System.out.println("No hay proceso para ejecutar, obteniendo Proceso....");
 			this.procesoEjecutar = this.monitor.ObtenerProceso();
+			cola.InsertarProceso(this.procesoEjecutar);
 		}
 		if (this.procesoEjecutar != null) {
 			this.procesoEjecutar.rafagaEjecutada++;
@@ -52,16 +54,16 @@ public class Procesador implements Runnable {
 					+ this.procesoEjecutar.rafagaRestante() + " de la cola " + this.procesoEjecutar.NombreCola);
 			// Bloquear proceso
 			System.out.println("¿Desea bloquear el proceso? y/n:");
-			String decision=this.lector.nextLine();
-			if(decision.equals("y")) {
+			String decision = this.lector.nextLine();
+			if (decision.equals("y")) {
 				this.bloquearProcesoEjecutar();
-			}else {
+			} else {
 				// Ejecucion proceso Round Robin;
 				if (this.procesoEjecutar.IdCola == 0) {
 					this.ejecucionProcesoRoundRobin();
 				}
-				if (this.procesoEjecutar!=null) {
-					if(this.procesoEjecutar.rafagaRestante() <= 0) {
+				if (this.procesoEjecutar != null) {
+					if (this.procesoEjecutar.rafagaRestante() <= 0) {
 						System.out.println("Proceso " + this.procesoEjecutar.id + " de la cola "
 								+ this.procesoEjecutar.NombreCola + " ejecutado con exito");
 						this.procesoEjecutar = null;
@@ -72,32 +74,35 @@ public class Procesador implements Runnable {
 			System.out.println("No hay mas procesos en las colas");
 			this.detener();
 		}
-		
+
 	}
 
 	// muestra en consola la informacion de las colas
 	public void mostrarColas() {
 		this.monitor.mostrarColasConsola();
 	}
-	
-	//ejecucion para el quantum del round robin
+
+	// ejecucion para el quantum del round robin
 	public void ejecucionProcesoRoundRobin() {
 		int quantum = this.monitor.QuantumColaRR();
 		if (this.procesoEjecutar.rafagaEjecutada % quantum == 0 && this.procesoEjecutar.rafagaRestante() > 0) {
 			System.out.println(
 					"Proceso " + this.procesoEjecutar.id + " retornado a la cola Round Robin por Quatum de " + quantum);
+
 			this.procesoEjecutar.rafaga = this.procesoEjecutar.rafagaRestante();
-			this.procesoEjecutar.rrejecutada = this.procesoEjecutar.rrejecutada+this.procesoEjecutar.rafagaEjecutada;
+			this.procesoEjecutar.rrejecutada = this.procesoEjecutar.rrejecutada + this.procesoEjecutar.rafagaEjecutada;
+			cola.CambiarRafaga(this.procesoEjecutar.rafagaEjecutada);
 			this.procesoEjecutar.rafagaEjecutada = 0;
 			this.monitor.reinsertarProcesoRR(procesoEjecutar);
 			this.procesoEjecutar = null;
 		}
 	}
-	
+
 	public void bloquearProcesoEjecutar() {
-		System.out.println("Bloquando proceso "+this.procesoEjecutar.id+" al tiempo"+ this.tiempo);
+		System.out.println("Bloquando proceso " + this.procesoEjecutar.id + " al tiempo" + this.tiempo);
+		cola.recalcularBloqueado(this.procesoEjecutar.rafagaEjecutada);
 		this.monitor.bloquearProceso(this.procesoEjecutar);
-		this.procesoEjecutar=null;
+		this.procesoEjecutar = null;
 	}
 
 	@Override
