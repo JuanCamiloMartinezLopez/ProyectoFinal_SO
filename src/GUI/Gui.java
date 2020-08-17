@@ -15,8 +15,6 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
-import javafx.scene.control.TableColumn;
-
 import javax.swing.JLabel;
 import java.awt.Button;
 import java.awt.TextField;
@@ -29,6 +27,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButton;
 import java.awt.Choice;
 
+@SuppressWarnings("unused")
 public class Gui {
 
 	private JFrame frame;
