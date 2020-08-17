@@ -15,11 +15,12 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
-import javafx.scene.control.TableColumn;
-
 import javax.swing.JLabel;
 import java.awt.Button;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JSpinner;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -65,24 +66,19 @@ public class Gui {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		String[] columnaTablaFinal = {"Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final",
-				"T.Retorno", "T.Espera","Cola Origen", "Cola Final"};
-		String[][] filasTablaFinal = {{ "Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final",
-				"T.Retorno", "T.Espera","Cola Origen", "Cola Final"} };
-		String[] columnaTabla = {"Id proceso","Rafaga","T.LLegada","Cola Origen","T.En Cola"};
-		String[][] filasTabla = { {"Id proceso","Rafaga","T.LLegada","Cola Origen","T.En Cola"} };
-		String[] columnaTablaBloqueados = { "Id proceso","Cola", "T.En cola" };
-		String[][] filasTablaBloqueados = {{"Id proceso","Cola", "T.En cola"}};
+		String[] columnaTablaFinal = { "Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final", "T.Retorno",
+				"T.Espera", "Cola Origen", "Cola Final" };
+		String[][] filasTablaFinal = { { "Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final", "T.Retorno",
+				"T.Espera", "Cola Origen", "Cola Final" } };
+		String[] columnaTabla = { "Id proceso", "Rafaga", "T.LLegada", "Cola Origen", "T.En Cola" };
+		String[][] filasTabla = { { "Id proceso", "Rafaga", "T.LLegada", "Cola Origen", "T.En Cola" } };
+		String[] columnaTablaBloqueados = { "Id proceso", "Cola", "T.En cola" };
+		String[][] filasTablaBloqueados = { { "Id proceso", "Cola", "T.En cola" } };
 
 		frame = new JFrame();
 		frame.setBounds(0, 0, 1400, 766);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
-		Label labelTitulo = new Label("Procesador");
-		labelTitulo.setFont(new Font("Arial", Font.PLAIN, 23));
-		labelTitulo.setBounds(514, 10, 123, 32);
-		frame.getContentPane().add(labelTitulo);
 
 		DefaultTableModel modeloTablaFinal = new DefaultTableModel(filasTablaFinal, columnaTablaFinal);
 		DefaultTableModel modeloTablaRR = new DefaultTableModel(filasTabla, columnaTabla);
@@ -94,9 +90,31 @@ public class Gui {
 		tabla_final.setBounds(233, 48, 643, 168);
 		frame.getContentPane().add(tabla_final);
 
+		tablaRoundRobin = new JTable(modeloTablaRR);
+		tablaRoundRobin.setBounds(10, 417, 440, 236);
+		frame.getContentPane().add(tablaRoundRobin);
+		String[] n = { "1", "2", "3", "4", "5" };
+
+		tablaSJF = new JTable(modeloTablaSJF);
+		tablaSJF.setBounds(460, 417, 440, 236);
+		frame.getContentPane().add(tablaSJF);
+
+		tablaFCFS = new JTable(modeloTablaFCFS);
+		tablaFCFS.setBounds(910, 417, 450, 236);
+		frame.getContentPane().add(tablaFCFS);
+
+		tablaBloqueados = new JTable(modeloTablaBloqueado);
+		tablaBloqueados.setBounds(917, 48, 234, 303);
+		frame.getContentPane().add(tablaBloqueados);
+
 		Canvas grannt = new Canvas();
 		grannt.setBounds(233, 222, 643, 163);
 		frame.getContentPane().add(grannt);
+
+		Label labelTitulo = new Label("Procesador");
+		labelTitulo.setFont(new Font("Arial", Font.PLAIN, 23));
+		labelTitulo.setBounds(514, 10, 123, 32);
+		frame.getContentPane().add(labelTitulo);
 
 		Label labelRoundRobin = new Label("Round Robin");
 		labelRoundRobin.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -113,43 +131,10 @@ public class Gui {
 		labelFCFS.setBounds(1112, 391, 62, 22);
 		frame.getContentPane().add(labelFCFS);
 
-		tablaRoundRobin = new JTable(modeloTablaRR);
-		tablaRoundRobin.setBounds(10, 417, 440, 236);
-		frame.getContentPane().add(tablaRoundRobin);
-		String[] n = { "1", "2", "3", "4", "5" };
-
-		tablaSJF = new JTable(modeloTablaSJF);
-		tablaSJF.setBounds(460, 417, 440, 236);
-		frame.getContentPane().add(tablaSJF);
-
-		tablaFCFS = new JTable(modeloTablaFCFS);
-		tablaFCFS.setBounds(910, 417, 450, 236);
-		frame.getContentPane().add(tablaFCFS);
-
 		Label labelBloquedo = new Label("Bloqueados");
 		labelBloquedo.setFont(new Font("Arial", Font.PLAIN, 18));
 		labelBloquedo.setBounds(975, 20, 123, 22);
 		frame.getContentPane().add(labelBloquedo);
-
-		tablaBloqueados = new JTable(modeloTablaBloqueado);
-		tablaBloqueados.setBounds(917, 48, 234, 303);
-		frame.getContentPane().add(tablaBloqueados);
-
-		Button botonBloquear = new Button("Bloquear");
-		botonBloquear.setBounds(995, 363, 90, 22);
-		frame.getContentPane().add(botonBloquear);
-
-		Button botonInsertar = new Button("Insertar");
-		botonInsertar.setBounds(563, 670, 90, 22);
-		frame.getContentPane().add(botonInsertar);
-
-		Button botonIniciar = new Button("Iniciar");
-		botonIniciar.setBounds(782, 670, 90, 22);
-		frame.getContentPane().add(botonIniciar);
-
-		Button botonPausar = new Button("Pausar");
-		botonPausar.setBounds(1061, 670, 90, 22);
-		frame.getContentPane().add(botonPausar);
 
 		JRadioButton RBRoundRobin = new JRadioButton("Round Robin");
 		RBRoundRobin.setSelected(true);
@@ -198,5 +183,42 @@ public class Gui {
 		labelidColaFCFS.setBounds(1193, 391, 150, 22);
 		frame.getContentPane().add(labelidColaFCFS);
 
+		Button botonBloquear = new Button("Bloquear");
+		botonBloquear.setBounds(995, 363, 90, 22);
+		frame.getContentPane().add(botonBloquear);
+		botonBloquear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+
+		Button botonInsertar = new Button("Insertar");
+		botonInsertar.setBounds(563, 670, 90, 22);
+		frame.getContentPane().add(botonInsertar);
+		botonInsertar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+
+		Button botonIniciar = new Button("Iniciar");
+		botonIniciar.setBounds(782, 670, 90, 22);
+		frame.getContentPane().add(botonIniciar);
+		botonIniciar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+
+		Button botonPausar = new Button("Pausar");
+		botonPausar.setBounds(1061, 670, 90, 22);
+		frame.getContentPane().add(botonPausar);
+		botonPausar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
 	}
 }

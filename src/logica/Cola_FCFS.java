@@ -10,8 +10,8 @@ public class Cola_FCFS extends Cola{
 	
 	//Ordenamiento Politica FCFS
 	public void Ordenamiento() {
-		//Primero en llegar, primero en ejecutarse 
-		//System.out.println("Ordenamiento Politica FCFS");
+		// Primero en llegar, primero en ejecutarse
+		// System.out.println("Ordenamiento Politica FCFS");
 		this.calcularTiemposProcesos();
 	}
 
