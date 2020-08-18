@@ -38,7 +38,6 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButton;
 import java.awt.Choice;
 
-
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -53,6 +52,11 @@ public class Gui {
 	private JTable tablaBloqueados;
 	private Procesador procesador;
 	private JLabel labeltiempo;
+	private Lienzo canvasGrantt;
+
+	public Lienzo getCanvasGrantt() {
+		return canvasGrantt;
+	}
 
 	private int tiempo = 0;
 	public boolean iniciar = false;
@@ -116,7 +120,7 @@ public class Gui {
 		frame.getContentPane().add(tablaRoundRobin);
 
 		JScrollPane scrollTablaRR = new JScrollPane(tablaRoundRobin);
-		scrollTablaRR.setBounds(10, 417, 440, 236);
+		scrollTablaRR.setBounds(10, 490, 440, 163);
 		frame.getContentPane().add(scrollTablaRR);
 
 		tablaSJF = new JTable(modeloTablaSJF);
@@ -124,7 +128,7 @@ public class Gui {
 		frame.getContentPane().add(tablaSJF);
 
 		JScrollPane scrollTablaSJF = new JScrollPane(tablaSJF);
-		scrollTablaSJF.setBounds(460, 417, 440, 236);
+		scrollTablaSJF.setBounds(460, 490, 440, 163);
 		frame.getContentPane().add(scrollTablaSJF);
 
 		tablaFCFS = new JTable(modeloTablaFCFS);
@@ -132,7 +136,7 @@ public class Gui {
 		frame.getContentPane().add(tablaFCFS);
 
 		JScrollPane scrollTablaFCFS = new JScrollPane(tablaFCFS);
-		scrollTablaFCFS.setBounds(910, 417, 450, 236);
+		scrollTablaFCFS.setBounds(910, 490, 450, 163);
 		frame.getContentPane().add(scrollTablaFCFS);
 
 		tablaBloqueados = new JTable(modeloTablaBloqueado);
@@ -143,10 +147,9 @@ public class Gui {
 		scrollBloqueado.setBounds(917, 48, 234, 303);
 		frame.getContentPane().add(scrollBloqueado);
 
-		Canvas grannt = new Canvas();
-		grannt.setBounds(233, 222, 643, 163);
-		frame.getContentPane().add(grannt);
-
+		canvasGrantt = new Lienzo();
+		frame.getContentPane().add(canvasGrantt);
+		
 		Label labelTitulo = new Label("Procesador");
 		labelTitulo.setFont(new Font("Arial", Font.PLAIN, 23));
 		labelTitulo.setBounds(514, 10, 123, 32);
@@ -154,17 +157,17 @@ public class Gui {
 
 		Label labelRoundRobin = new Label("Round Robin");
 		labelRoundRobin.setFont(new Font("Arial", Font.PLAIN, 18));
-		labelRoundRobin.setBounds(157, 391, 123, 27);
+		labelRoundRobin.setBounds(144, 457, 123, 27);
 		frame.getContentPane().add(labelRoundRobin);
 
 		Label labelSJF = new Label("SJF");
 		labelSJF.setFont(new Font("Arial", Font.PLAIN, 18));
-		labelSJF.setBounds(678, 391, 37, 22);
+		labelSJF.setBounds(679, 462, 37, 22);
 		frame.getContentPane().add(labelSJF);
 
 		Label labelFCFS = new Label("FCFS");
 		labelFCFS.setFont(new Font("Arial", Font.PLAIN, 18));
-		labelFCFS.setBounds(1112, 391, 62, 22);
+		labelFCFS.setBounds(1112, 462, 62, 22);
 		frame.getContentPane().add(labelFCFS);
 
 		Label labelBloquedo = new Label("Bloqueados");
@@ -206,17 +209,17 @@ public class Gui {
 		Label labelidColaRR = new Label("Prioridad Round Robin: 1");
 		labelidColaRR.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelidColaRR.setAlignment(Label.RIGHT);
-		labelidColaRR.setBounds(273, 391, 177, 22);
+		labelidColaRR.setBounds(273, 462, 177, 22);
 		frame.getContentPane().add(labelidColaRR);
 
 		Label labelidColaSJF = new Label("Prioridad SJF: 2");
 		labelidColaSJF.setFont(new Font("Arial", Font.PLAIN, 14));
-		labelidColaSJF.setBounds(732, 391, 123, 22);
+		labelidColaSJF.setBounds(733, 462, 123, 22);
 		frame.getContentPane().add(labelidColaSJF);
 
 		Label labelidColaFCFS = new Label("Prioridad FCFS: 3");
 		labelidColaFCFS.setFont(new Font("Arial", Font.PLAIN, 14));
-		labelidColaFCFS.setBounds(1193, 391, 150, 22);
+		labelidColaFCFS.setBounds(1180, 462, 150, 22);
 		frame.getContentPane().add(labelidColaFCFS);
 
 		labeltiempo = new JLabel("tiempo: 0");
@@ -329,21 +332,21 @@ public class Gui {
 	public JTable tablaCola(int id) {
 		JTable Cola;
 		switch (id) {
-			case 0:
-				Cola = this.tablaRoundRobin;
-				break;
-			case 1:
-				Cola = this.tablaSJF;
-				break;
-			case 2:
-				Cola = this.tablaFCFS;
-				break;
-			case 3:
-				Cola = this.tablaBloqueados;
-				break;
-			default:
-				System.out.println("Problema al insertar proceso");
-				return null;
+		case 0:
+			Cola = this.tablaRoundRobin;
+			break;
+		case 1:
+			Cola = this.tablaSJF;
+			break;
+		case 2:
+			Cola = this.tablaFCFS;
+			break;
+		case 3:
+			Cola = this.tablaBloqueados;
+			break;
+		default:
+			System.out.println("Problema al insertar proceso");
+			return null;
 		}
 		return Cola;
 	}
@@ -359,11 +362,11 @@ public class Gui {
 		this.limpiarTabla(tabla, tabla.getRowCount());
 		Object[][] info = cFinal.infoProcesos();
 		int tamaño = cFinal.getNumProcesos();
-		//System.out.println("tamaño cola final " + tamaï¿½o);
+		// System.out.println("tamaño cola final " + tamaï¿½o);
 		for (int i = 0; i < tamaño; i++) {
-			//System.out.println("proceso " + (i + 1));
+			// System.out.println("proceso " + (i + 1));
 			for (int j = 0; j < 5; j++) {
-				//System.out.println(info[i][j]);
+				// System.out.println(info[i][j]);
 			}
 			modelo.addRow(info[i]);
 		}
@@ -378,5 +381,11 @@ public class Gui {
 			}
 		}
 
+	}
+
+	public void pintar() {
+		// canvasGrantt.nombre("Hola");
+		canvasGrantt.tabla(tabla_final);
+		canvasGrantt.repaint();
 	}
 }
