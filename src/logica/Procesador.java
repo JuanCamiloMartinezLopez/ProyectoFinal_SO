@@ -1,5 +1,7 @@
 package logica;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Scanner;
 
@@ -71,7 +73,7 @@ public class Procesador implements Runnable {
 			}
 		}
 		if (this.procesoEjecutar != null) {
-
+			this.dibujarGanttProceso(this.interfaz.getCanvasGrantt().getGraphics());
 			this.procesoEjecutar.rafagaEjecutada++;
 			System.out.println("Ejecutando el proceso " + this.procesoEjecutar.id + " con rafaga restante "
 					+ this.procesoEjecutar.rafagaRestante() + " de la cola " + this.procesoEjecutar.NombreCola);
@@ -128,33 +130,51 @@ public class Procesador implements Runnable {
 		cola.recalcularBloqueado(this.procesoEjecutar.rafagaEjecutada);
 		this.procesoEjecutar = null;
 	}
-	
+
 	public void dibujarGantt(Graphics g) {
-		if(g==null) {
+		if (g == null) {
 			System.out.println("No se puede dibujar");
 			return;
 		}
-		int num=this.cola.getNumProcesos();
-		Proceso p=cola.raiz;
-		for(int i= 0; i<num; i++) {
-			p=p.sig;
-			g.drawString(p.id, 0, (i+1)*25);
+		int num = this.cola.getNumProcesos();
+		Proceso p = cola.raiz;
+		int idt = 24;
+		for (int i = 0; i < num; i++) {
+			p = p.sig;
+			g.setColor(Color.BLACK);
+			g.setFont(new Font("Arial", Font.PLAIN, 10));
+			g.drawString(p.id, 0, idt + (i * 10));
+			System.out.println("y1:" + idt + ((i) * 10));
+			if(p.tespera>0) {
+				int te=p.tespera;
+				g.setColor(Color.YELLOW);
+				g.fillRect(6 * p.tllegada + 24,idt + (i * 10)-10 , 6*te, 10);
+				System.out.println("y2:" + (idt + (i * 10)));
+			}
 		}
-		
+
 	}
-	
-	public void dibujarGanttProceso(Graphics g, int tiempo) {
-		//aqui voy a dibujar los procesos segun el tiempo
-		if(g==null) {
+
+	public void dibujarGanttProceso(Graphics g) {
+		// aqui voy a dibujar los procesos segun el tiempo
+		if (g == null) {
 			System.out.println("No se puede dibujar");
 			return;
 		}
-		int num=this.cola.getNumProcesos();
-		Proceso p=cola.raiz;
-		for(int i= 0; i<num; i++) {
-			p=p.sig;
-			g.drawString(p.id, 0, (i+1)*25);
+		int idt = 24;
+		int num = this.cola.getNumProcesos();
+		Proceso p = cola.raiz;
+		int i = 0;
+		for (i = 0; i < num; i++) {
+			p = p.sig;
+			if (p.tcomienzo >= this.tiempo && p.tfinal <= this.tiempo) {
+				break;
+			}
 		}
+		g.setColor(Color.BLUE);
+		g.fillRect(6 * this.tiempo + 24,idt + ((i-1) * 10)-10 , 6, 10);
+		System.out.println("y3:" + (idt + ((i-1) * 10)));
+
 	}
 
 	@Override
@@ -186,7 +206,8 @@ public class Procesador implements Runnable {
 
 	public void setGantt(Graphics gantt) {
 		this.gantt = gantt;
-		if(gantt!=null)System.out.println("gantt añadido");
+		if (gantt != null)
+			System.out.println("gantt añadido");
 	}
 
 }
