@@ -18,6 +18,17 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import java.awt.Button;
 import java.awt.TextField;
+import logica.Cola;
+import logica.Cola_Final;
+import logica.Procesador;
+import logica.Proceso;
+
+import javax.swing.JLabel;
+import java.awt.Button;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JSpinner;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -28,6 +39,9 @@ import javax.swing.JRadioButton;
 import java.awt.Choice;
 
 @SuppressWarnings("unused")
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+
 public class Gui {
 
 	private JFrame frame;
@@ -36,10 +50,19 @@ public class Gui {
 	private JTable tablaSJF;
 	private JTable tablaFCFS;
 	private JTable tablaBloqueados;
+	private Procesador procesador;
+	private JLabel labeltiempo;
 
-	/**
-	 * Launch the application.
-	 */
+	private int tiempo = 0;
+	public boolean iniciar = false;
+
+	public void setTiempo(int tiempo) {
+		this.tiempo = tiempo;
+		this.labeltiempo.setText(this.Mostrartiempo());
+		this.ActualizarTablas();
+		this.ActualizarTablaHistorial();
+	}
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -53,35 +76,25 @@ public class Gui {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public Gui() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
-		String[] columnaTablaFinal = {"Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final",
-				"T.Retorno", "T.Espera","Cola Origen", "Cola Final"};
-		String[][] filasTablaFinal = {{ "Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final",
-				"T.Retorno", "T.Espera","Cola Origen", "Cola Final"} };
-		String[] columnaTabla = {"Id proceso","Rafaga","T.LLegada","Cola Origen","T.En Cola"};
-		String[][] filasTabla = { {"Id proceso","Rafaga","T.LLegada","Cola Origen","T.En Cola"} };
-		String[] columnaTablaBloqueados = { "Id proceso","Cola", "T.En cola" };
-		String[][] filasTablaBloqueados = {{"Id proceso","Cola", "T.En cola"}};
+		this.procesador = new Procesador(this);
+
+		String[] columnaTablaFinal = { "Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final", "T.Retorno",
+				"T.Espera", "Cola Origen", "Cola Final" };
+		String[][] filasTablaFinal = null;
+		Object[] columnaTabla = { "Id proceso", "Rafaga", "T.LLegada", "Cola Origen", "T.En Cola" };
+		Object[][] filasTabla = null;
+		String[] columnaTablaBloqueados = { "Id proceso", "Cola", "T.En cola" };
+		String[][] filasTablaBloqueados = null;
 
 		frame = new JFrame();
 		frame.setBounds(0, 0, 1400, 766);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
-		Label labelTitulo = new Label("Procesador");
-		labelTitulo.setFont(new Font("Arial", Font.PLAIN, 23));
-		labelTitulo.setBounds(514, 10, 123, 32);
-		frame.getContentPane().add(labelTitulo);
 
 		DefaultTableModel modeloTablaFinal = new DefaultTableModel(filasTablaFinal, columnaTablaFinal);
 		DefaultTableModel modeloTablaRR = new DefaultTableModel(filasTabla, columnaTabla);
@@ -93,9 +106,50 @@ public class Gui {
 		tabla_final.setBounds(233, 48, 643, 168);
 		frame.getContentPane().add(tabla_final);
 
+		JScrollPane scrollTablaF = new JScrollPane(tabla_final);
+		scrollTablaF.setBounds(233, 48, 643, 168);
+		frame.getContentPane().add(scrollTablaF);
+
+		tablaRoundRobin = new JTable(modeloTablaRR);
+		tablaRoundRobin.setBounds(10, 417, 440, 236);
+		frame.getContentPane().add(tablaRoundRobin);
+
+		JScrollPane scrollTablaRR = new JScrollPane(tablaRoundRobin);
+		scrollTablaRR.setBounds(10, 417, 440, 236);
+		frame.getContentPane().add(scrollTablaRR);
+
+		tablaSJF = new JTable(modeloTablaSJF);
+		tablaSJF.setBounds(460, 417, 440, 236);
+		frame.getContentPane().add(tablaSJF);
+
+		JScrollPane scrollTablaSJF = new JScrollPane(tablaSJF);
+		scrollTablaSJF.setBounds(460, 417, 440, 236);
+		frame.getContentPane().add(scrollTablaSJF);
+
+		tablaFCFS = new JTable(modeloTablaFCFS);
+		tablaFCFS.setBounds(910, 417, 450, 236);
+		frame.getContentPane().add(tablaFCFS);
+
+		JScrollPane scrollTablaFCFS = new JScrollPane(tablaFCFS);
+		scrollTablaFCFS.setBounds(910, 417, 450, 236);
+		frame.getContentPane().add(scrollTablaFCFS);
+
+		tablaBloqueados = new JTable(modeloTablaBloqueado);
+		tablaBloqueados.setBounds(917, 48, 234, 303);
+		frame.getContentPane().add(tablaBloqueados);
+
+		JScrollPane scrollBloqueado = new JScrollPane(tablaBloqueados);
+		scrollBloqueado.setBounds(917, 48, 234, 303);
+		frame.getContentPane().add(scrollBloqueado);
+
 		Canvas grannt = new Canvas();
 		grannt.setBounds(233, 222, 643, 163);
 		frame.getContentPane().add(grannt);
+
+		Label labelTitulo = new Label("Procesador");
+		labelTitulo.setFont(new Font("Arial", Font.PLAIN, 23));
+		labelTitulo.setBounds(514, 10, 123, 32);
+		frame.getContentPane().add(labelTitulo);
 
 		Label labelRoundRobin = new Label("Round Robin");
 		labelRoundRobin.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -112,43 +166,10 @@ public class Gui {
 		labelFCFS.setBounds(1112, 391, 62, 22);
 		frame.getContentPane().add(labelFCFS);
 
-		tablaRoundRobin = new JTable(modeloTablaRR);
-		tablaRoundRobin.setBounds(10, 417, 440, 236);
-		frame.getContentPane().add(tablaRoundRobin);
-		String[] n = { "1", "2", "3", "4", "5" };
-
-		tablaSJF = new JTable(modeloTablaSJF);
-		tablaSJF.setBounds(460, 417, 440, 236);
-		frame.getContentPane().add(tablaSJF);
-
-		tablaFCFS = new JTable(modeloTablaFCFS);
-		tablaFCFS.setBounds(910, 417, 450, 236);
-		frame.getContentPane().add(tablaFCFS);
-
 		Label labelBloquedo = new Label("Bloqueados");
 		labelBloquedo.setFont(new Font("Arial", Font.PLAIN, 18));
 		labelBloquedo.setBounds(975, 20, 123, 22);
 		frame.getContentPane().add(labelBloquedo);
-
-		tablaBloqueados = new JTable(modeloTablaBloqueado);
-		tablaBloqueados.setBounds(917, 48, 234, 303);
-		frame.getContentPane().add(tablaBloqueados);
-
-		Button botonBloquear = new Button("Bloquear");
-		botonBloquear.setBounds(995, 363, 90, 22);
-		frame.getContentPane().add(botonBloquear);
-
-		Button botonInsertar = new Button("Insertar");
-		botonInsertar.setBounds(563, 670, 90, 22);
-		frame.getContentPane().add(botonInsertar);
-
-		Button botonIniciar = new Button("Iniciar");
-		botonIniciar.setBounds(782, 670, 90, 22);
-		frame.getContentPane().add(botonIniciar);
-
-		Button botonPausar = new Button("Pausar");
-		botonPausar.setBounds(1061, 670, 90, 22);
-		frame.getContentPane().add(botonPausar);
 
 		JRadioButton RBRoundRobin = new JRadioButton("Round Robin");
 		RBRoundRobin.setSelected(true);
@@ -196,6 +217,165 @@ public class Gui {
 		labelidColaFCFS.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelidColaFCFS.setBounds(1193, 391, 150, 22);
 		frame.getContentPane().add(labelidColaFCFS);
+
+		labeltiempo = new JLabel("tiempo: 0");
+		labeltiempo.setForeground(Color.RED);
+		labeltiempo.setFont(new Font("Arial", Font.PLAIN, 13));
+		labeltiempo.setBounds(669, 671, 75, 21);
+		frame.getContentPane().add(labeltiempo);
+
+		Button botonBloquear = new Button("Bloquear");
+		botonBloquear.setBounds(995, 363, 90, 22);
+		frame.getContentPane().add(botonBloquear);
+		botonBloquear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				procesador.bloquearProcesoEjecutar();
+				ActualizarTablas();
+				ActualizarTablaHistorial();
+			}
+		});
+
+		Button botonInsertar = new Button("Insertar");
+		botonInsertar.setBounds(563, 670, 90, 22);
+		frame.getContentPane().add(botonInsertar);
+		botonInsertar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int rafaga = (int) spinnerRafaga.getValue();
+				int tllegada = tiempo;
+				int idcola;
+				if (RBRoundRobin.isSelected()) {
+					idcola = 0;
+				} else if (RBSJF.isSelected()) {
+					idcola = 1;
+				} else {
+					idcola = 2;
+				}
+
+				insertarProceso(rafaga, tllegada, idcola);
+			}
+		});
+
+		Button botonIniciar = new Button("Iniciar");
+		botonIniciar.setBounds(782, 670, 90, 22);
+		frame.getContentPane().add(botonIniciar);
+		botonIniciar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				procesador.iniciar();
+				iniciar = true;
+
+			}
+		});
+
+		Button botonPausar = new Button("Pausar");
+		botonPausar.setBounds(1061, 670, 90, 22);
+		frame.getContentPane().add(botonPausar);
+
+		botonPausar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (!iniciar) {
+					botonPausar.setLabel("Pausar");
+					iniciar = true;
+				} else {
+					botonPausar.setLabel("Continuar");
+					iniciar = false;
+				}
+				procesador.pausar_despuasar();
+			}
+		});
+	}
+
+	public String Mostrartiempo() {
+		if (this.iniciar) {
+
+			return "tiempo: " + String.valueOf(this.tiempo);
+		}
+		return "tiempo: 0";
+	}
+
+	public void insertarProceso(int rafaga, int tllegada, int cola) {
+		this.procesador.insertarProcesoCola(rafaga, tllegada, cola);
+		this.ActualizarTablas();
+	}
+
+	public void procesoEjecucion(Proceso p) {
+
+	}
+
+	public void ActualizarTablas() {
+		Cola colas[] = this.procesador.procesosEnColas();
+		Object[][] info;
+		for (Cola cola : colas) {
+			JTable tabla = this.tablaCola(cola.getIdCola());
+			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+			if (cola.colaVacia()) {
+				this.limpiarTabla(tabla, tabla.getRowCount());
+				continue;
+			}
+
+			this.limpiarTabla(tabla, tabla.getRowCount());
+			info = cola.infoProcesos();
+			int tama�o = cola.getNumProcesos();
+			for (int i = 0; i < tama�o; i++) {
+				modelo.addRow(info[i]);
+			}
+		}
+	}
+
+	public JTable tablaCola(int id) {
+		JTable Cola;
+		switch (id) {
+			case 0:
+				Cola = this.tablaRoundRobin;
+				break;
+			case 1:
+				Cola = this.tablaSJF;
+				break;
+			case 2:
+				Cola = this.tablaFCFS;
+				break;
+			case 3:
+				Cola = this.tablaBloqueados;
+				break;
+			default:
+				System.out.println("Problema al insertar proceso");
+				return null;
+		}
+		return Cola;
+	}
+
+	public void ActualizarTablaHistorial() {
+		JTable tabla = this.tabla_final;
+		Cola_Final cFinal = this.procesador.getCola_final();
+		DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+		if (cFinal.colaVacia()) {
+			this.limpiarTabla(tabla, tabla.getRowCount());
+			return;
+		}
+		this.limpiarTabla(tabla, tabla.getRowCount());
+		Object[][] info = cFinal.infoProcesos();
+		int tama�o = cFinal.getNumProcesos();
+		//System.out.println("tama�o cola final " + tama�o);
+		for (int i = 0; i < tama�o; i++) {
+			//System.out.println("proceso " + (i + 1));
+			for (int j = 0; j < 5; j++) {
+				//System.out.println(info[i][j]);
+			}
+			modelo.addRow(info[i]);
+		}
+	}
+
+	public void limpiarTabla(JTable t, int n) {
+
+		DefaultTableModel modelo = (DefaultTableModel) t.getModel();
+		if (modelo.getRowCount() > 0) {
+			for (int i = 0; i < n; i++) {
+				modelo.removeRow(0);
+			}
+		}
 
 	}
 }

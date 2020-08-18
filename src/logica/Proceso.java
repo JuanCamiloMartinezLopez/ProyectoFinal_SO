@@ -68,6 +68,29 @@ public class Proceso {
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-		return "Falló";
+		return "Fallï¿½";
+	}
+
+	public Proceso duplicar() {
+		Proceso duplicado = new Proceso();
+		duplicado.rafaga = this.rafaga;
+		duplicado.tllegada = this.tllegada;
+		duplicado.tcomienzo = this.tcomienzo;
+		duplicado.tfinal = this.tfinal;
+		duplicado.tretorno = this.tretorno;
+		duplicado.prioridad = this.prioridad;
+		duplicado.tespera = this.tespera;
+		duplicado.id = this.id;
+		duplicado.padre = this.padre;
+		duplicado.sig = this.sig;
+		duplicado.ejecutado = this.ejecutado;
+		duplicado.tbloqueo = this.tbloqueo;
+		duplicado.tesperaRetorno = this.tesperaRetorno;
+		duplicado.IdCola = this.IdCola;
+		duplicado.NombreCola = this.NombreCola;
+		duplicado.rafagaEjecutada = this.rafagaEjecutada;
+		duplicado.rrejecutada = this.rrejecutada;
+		duplicado.ColaProviene = this.ColaProviene;
+		return duplicado;
 	}
 }

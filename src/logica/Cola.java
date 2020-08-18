@@ -3,7 +3,6 @@ package logica;
 import java.util.ArrayList;
 
 public class Cola {
-	@SuppressWarnings("unused")
 	private int numProcesos;
 	public Proceso raiz;
 	@SuppressWarnings("unused")
@@ -46,15 +45,9 @@ public class Cola {
 		this.caracter++;
 		nuevo.rafaga = rafaga;
 		nuevo.tllegada = tiempo;
-		nuevo.IdCola=this.IdCola;
-		nuevo.NombreCola=this.NombreCola;
-		if (nuevo.IdCola == 1) {
-			nuevo.ColaProviene = "RR";
-		}else if(nuevo.IdCola == 2 ) {
-			nuevo.ColaProviene = "SJF";
-		}else if(nuevo.IdCola == 3) {
-			nuevo.ColaProviene = "FCFS";
-		}
+		nuevo.IdCola = this.IdCola;
+		nuevo.NombreCola = this.NombreCola;
+		nuevo.ColaProviene = this.NombreCola;
 		if (raiz.sig == raiz) {
 			raiz.sig = nuevo;
 			cabeza = nuevo;
@@ -81,12 +74,12 @@ public class Cola {
 		Proceso nuevo = new Proceso();
 		nuevo.rafaga = p.rafaga;
 		nuevo.tllegada = p.tllegada;
-		nuevo.IdCola=this.IdCola;
-		nuevo.NombreCola=this.NombreCola;
+		nuevo.IdCola = this.IdCola;
+		nuevo.NombreCola = this.NombreCola;
 		nuevo.rrejecutada = p.rrejecutada;
 		nuevo.ColaProviene = p.ColaProviene;
-		int tamañoId = p.id.length();
-		if (tamañoId == 1) {
+		int tamaï¿½oId = p.id.length();
+		if (tamaï¿½oId == 1) {
 			nuevo.id = p.id + "1";
 		} else {
 			char id = p.id.charAt(0);
@@ -119,11 +112,11 @@ public class Cola {
 		Proceso nuevo = new Proceso();
 		nuevo.rafaga = p.rafaga;
 		nuevo.id = p.id;
-		nuevo.IdCola=this.IdCola;
-		nuevo.NombreCola=this.NombreCola;
+		nuevo.IdCola = this.IdCola;
+		nuevo.NombreCola = this.NombreCola;
 		nuevo.tllegada = tiempo;
 		nuevo.ColaProviene = p.ColaProviene;
-		
+
 		if (raiz.sig == raiz) {
 			raiz.sig = nuevo;
 			cabeza = nuevo;
@@ -142,18 +135,40 @@ public class Cola {
 		this.Ordenamiento();
 	}
 
+	public int getIdCola() {
+		return IdCola;
+	}
+
+	// Insertar un proceso con todos los datos
+	public void InsertarProceso(Proceso nuevo) {
+		if (raiz.sig == raiz) {
+			raiz.sig = nuevo;
+			this.cabeza = nuevo;
+			nuevo.sig = raiz;
+			nuevo.padre = raiz;
+			raiz.padre = nuevo;
+		} else {
+			Proceso aux = raiz.padre;
+			aux.sig = nuevo;
+			nuevo.sig = raiz;
+			raiz.padre = nuevo;
+			nuevo.padre = aux;
+		}
+		this.numProcesos++;
+	}
+
 	// atender el primer proceso en la cola
 	public Proceso atender() {
-		Proceso proceso= raiz.sig;
-		if(proceso==this.raiz) {
+		Proceso proceso = raiz.sig;
+		if (proceso == this.raiz) {
 			System.out.println("Cola Vacia");
 			return null;
 		}
-		Proceso sig= proceso.sig;
-		Proceso padre= raiz;
-		padre.sig=sig;
-		sig.padre=padre;
-		cabeza=sig;
+		Proceso sig = proceso.sig;
+		Proceso padre = raiz;
+		padre.sig = sig;
+		sig.padre = padre;
+		cabeza = sig;
 		this.numProcesos--;
 		this.calcularTiemposProcesos();
 		return proceso;
@@ -166,13 +181,13 @@ public class Cola {
 		}
 		return false;
 	}
-	
-	// Retorna los procesos que deben cambiar de cola por politica de envejecimiento 
+
+	// Retorna los procesos que deben cambiar de cola por politica de envejecimiento
 	public ArrayList<Proceso> procesosPoliticaEnvejecimiento() {
 		ArrayList<Proceso> procesosPE = new ArrayList<Proceso>();
 		Proceso aux = this.raiz.sig;
 		while (aux != this.raiz) {
-			int tiempoEnCola = this.tiempo - aux.tllegada+1;
+			int tiempoEnCola = this.tiempo - aux.tllegada + 1;
 			if (tiempoEnCola >= this.tiempoPE) {
 				Proceso auxp = aux.padre;
 				auxp.sig = aux.sig;
@@ -194,32 +209,49 @@ public class Cola {
 		this.tiempo = tiempo;
 		this.calcularTiemposProcesos();
 	}
-	
-	//Ordenamiento para sobreescribir segun politica en las clases hijas
-	public void Ordenamiento() {
-		
+
+	public Object[][] infoProcesos() {
+		Object[][] info = new Object[this.numProcesos][5];
+		Proceso aux = this.raiz;
+		int i = 0;
+		while (aux.sig != this.raiz) {
+			aux = aux.sig;
+			// System.out.println(i+" - "+aux.toString());
+			info[i][0] = aux.id;
+			info[i][1] = aux.rafaga;
+			info[i][2] = aux.tllegada;
+			info[i][3] = aux.ColaProviene;
+			info[i][4] = this.tiempo - aux.tllegada + 1;
+			i++;
+		}
+		return info;
 	}
-	
+
+	// Ordenamiento para sobreescribir segun politica en las clases hijas
+	public void Ordenamiento() {
+
+	}
+
 	public void calcularTiemposProcesos() {
-		Proceso aux= this.raiz.sig;
-		aux.tcomienzo=this.tiempo+1;
+		Proceso aux = this.raiz.sig;
+		aux.tcomienzo = this.tiempo;
 		if (aux.tcomienzo < aux.tllegada) {
 			aux.tcomienzo = aux.tllegada;
 		}
-		aux.tfinal=aux.rafaga+aux.tcomienzo;
-		aux.tretorno=aux.tfinal-aux.tllegada;
-		aux.tespera=aux.tretorno-aux.rafaga;
-		aux=aux.sig;
-		while(aux!=this.raiz) {
-			//tiempo comienzo
-			aux.tcomienzo=aux.padre.tfinal;
-			//tiempo final
-			aux.tfinal=aux.rafaga+aux.tcomienzo;
-			//tiempo retorno
-			aux.tretorno=aux.tfinal-aux.tllegada;
-			//tiempo espera
-			aux.tespera=aux.tretorno-aux.rafaga;
-			aux=aux.sig;
+		aux.tfinal = aux.rafaga + aux.tcomienzo;
+		aux.tretorno = aux.tfinal - aux.tllegada;
+		aux.tespera = aux.tretorno - aux.rafaga;
+		aux = aux.sig;
+		while (aux != this.raiz) {
+			// tiempo comienzo
+			aux.tcomienzo = aux.padre.tfinal;
+			// tiempo final
+			aux.tfinal = aux.rafaga + aux.tcomienzo;
+			// tiempo retorno
+			aux.tretorno = aux.tfinal - aux.tllegada;
+			// tiempo espera
+			aux.tespera = aux.tretorno - aux.rafaga;
+			aux = aux.sig;
 		}
 	}
 
