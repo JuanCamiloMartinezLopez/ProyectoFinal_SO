@@ -10,7 +10,6 @@ public class Procesador implements Runnable {
 	private boolean stop;
 	private Monitor monitor;
 	private Proceso procesoEjecutar = null;
-	private boolean Pausar=false;
 	public Cola_Final cola = new Cola_Final();
 
 	public Gui interfaz;
@@ -33,10 +32,6 @@ public class Procesador implements Runnable {
 		this.runThread = new Thread(this);
 		this.stop = false;
 		this.runThread.start();
-	}
-	
-	public void pausar_despausar(){
-		this.Pausar=!this.Pausar;
 	}
 
 	public void reiniciar() {
@@ -107,17 +102,10 @@ public class Procesador implements Runnable {
 					"Proceso " + this.procesoEjecutar.id + " retornado a la cola Round Robin por Quatum de " + quantum);
 
 			this.procesoEjecutar.rafaga = this.procesoEjecutar.rafagaRestante();
-			System.out.println("1-Nueva Rafaga: "+this.procesoEjecutar.rafaga);
 			this.procesoEjecutar.rrejecutada = this.procesoEjecutar.rrejecutada + this.procesoEjecutar.rafagaEjecutada;
-			System.out.println("2-Nueva Rafaga: "+this.procesoEjecutar.rafaga);
-			
-			System.out.println("3-Nueva Rafaga: "+this.procesoEjecutar.rafaga);
 			this.monitor.reinsertarProcesoRR(procesoEjecutar);
-			System.out.println("4-Nueva Rafaga: "+this.procesoEjecutar.rafaga);
-			int rafagaEjecutada=this.procesoEjecutar.rafagaEjecutada;
-			cola.CambiarRafaga(rafagaEjecutada);
+			cola.CambiarRafaga(this.procesoEjecutar.rafagaEjecutada);
 			this.procesoEjecutar.rafagaEjecutada = 0;
-			System.out.println("5-Nueva Rafaga: "+this.procesoEjecutar.rafaga);
 			this.procesoEjecutar = null;
 		}
 	}
@@ -132,26 +120,21 @@ public class Procesador implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("\nProcesador iniciado\n");
-		this.mostrarColas();
+
 		while (!this.stop) {
-			if(!this.Pausar) {
-				System.out.println("\n------------------------------");
-				this.tiempo++;
-				System.out.println("tiempo: " + this.tiempo);
-				this.monitor.actualizarTiempo(this.tiempo);
-				this.EjecutarProceso();
-				this.interfaz.setTiempo(this.tiempo);
-				this.mostrarColas();
-				
-				System.out.println("\n------------------------------");
-			}else {
-				System.out.println("Procesador pausado");
-			}
+			System.out.println("\n------------------------------");
+			this.tiempo++;
+			System.out.println("tiempo: " + this.tiempo);
+			this.monitor.actualizarTiempo(this.tiempo);
+			this.EjecutarProceso();
+			this.interfaz.setTiempo(this.tiempo);
+			this.mostrarColas();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			System.out.println("\n------------------------------");
 		}
 		System.out.println("\nProcesador terminado al tiempo: " + this.tiempo);
 		this.cola.mostrarConsola();
