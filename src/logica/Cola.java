@@ -78,8 +78,8 @@ public class Cola {
 		nuevo.NombreCola = this.NombreCola;
 		nuevo.rrejecutada = p.rrejecutada;
 		nuevo.ColaProviene = p.ColaProviene;
-		int tamaï¿½oId = p.id.length();
-		if (tamaï¿½oId == 1) {
+		int tamaño = p.id.length();
+		if (tamaño == 1) {
 			nuevo.id = p.id + "1";
 		} else {
 			char id = p.id.charAt(0);

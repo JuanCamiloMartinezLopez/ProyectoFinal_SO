@@ -38,10 +38,11 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButton;
 import java.awt.Choice;
 
-@SuppressWarnings("unused")
+
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+@SuppressWarnings("unused")
 public class Gui {
 
 	private JFrame frame;
@@ -318,8 +319,8 @@ public class Gui {
 
 			this.limpiarTabla(tabla, tabla.getRowCount());
 			info = cola.infoProcesos();
-			int tamaï¿½o = cola.getNumProcesos();
-			for (int i = 0; i < tamaï¿½o; i++) {
+			int tamaño = cola.getNumProcesos();
+			for (int i = 0; i < tamaño; i++) {
 				modelo.addRow(info[i]);
 			}
 		}
@@ -357,9 +358,9 @@ public class Gui {
 		}
 		this.limpiarTabla(tabla, tabla.getRowCount());
 		Object[][] info = cFinal.infoProcesos();
-		int tamaï¿½o = cFinal.getNumProcesos();
-		//System.out.println("tamaï¿½o cola final " + tamaï¿½o);
-		for (int i = 0; i < tamaï¿½o; i++) {
+		int tamaño = cFinal.getNumProcesos();
+		//System.out.println("tamaño cola final " + tamaï¿½o);
+		for (int i = 0; i < tamaño; i++) {
 			//System.out.println("proceso " + (i + 1));
 			for (int j = 0; j < 5; j++) {
 				//System.out.println(info[i][j]);
