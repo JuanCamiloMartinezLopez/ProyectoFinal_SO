@@ -3,7 +3,6 @@ package logica;
 import java.util.ArrayList;
 
 public class Cola {
-	@SuppressWarnings("unused")
 	private int numProcesos;
 	public Proceso raiz;
 	@SuppressWarnings("unused")
@@ -48,13 +47,7 @@ public class Cola {
 		nuevo.tllegada = tiempo;
 		nuevo.IdCola = this.IdCola;
 		nuevo.NombreCola = this.NombreCola;
-		if (nuevo.IdCola == 1) {
-			nuevo.ColaProviene = "RR";
-		} else if (nuevo.IdCola == 2) {
-			nuevo.ColaProviene = "SJF";
-		} else if (nuevo.IdCola == 3) {
-			nuevo.ColaProviene = "FCFS";
-		}
+		nuevo.ColaProviene=this.NombreCola;
 		if (raiz.sig == raiz) {
 			raiz.sig = nuevo;
 			cabeza = nuevo;
@@ -142,6 +135,10 @@ public class Cola {
 		this.Ordenamiento();
 	}
 	
+	public int getIdCola() {
+		return IdCola;
+	}
+
 	//Insertar un proceso con todos los datos
 	public void InsertarProceso(Proceso nuevo) {
 		if (raiz.sig == raiz) {
@@ -157,6 +154,7 @@ public class Cola {
 			raiz.padre = nuevo;
 			nuevo.padre = aux;
 		}
+		this.numProcesos++;
 	}
 
 	// atender el primer proceso en la cola
@@ -210,6 +208,23 @@ public class Cola {
 	public void setTiempo(int tiempo) {
 		this.tiempo = tiempo;
 		this.calcularTiemposProcesos();
+	}
+	
+	public Object[][] infoProcesos(){
+		Object[][] info= new Object[this.numProcesos][5];
+		Proceso aux = this.raiz;
+		int i=0;
+		while (aux.sig != this.raiz) {
+			aux=aux.sig;
+			//System.out.println(i+" - "+aux.toString());
+			info[i][0]=aux.id;
+			info[i][1]=aux.rafaga;
+			info[i][2]=aux.tllegada;
+			info[i][3]=aux.ColaProviene;
+			info[i][4]=this.tiempo - aux.tllegada + 1;
+			i++;
+		}
+		return info;
 	}
 
 	// Ordenamiento para sobreescribir segun politica en las clases hijas

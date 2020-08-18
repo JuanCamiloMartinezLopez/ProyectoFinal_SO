@@ -45,7 +45,8 @@ public class Main {
 		 * System.out.println("\nCola Actualmente\n"); cl.mostrarConsola();
 		 * System.out.println("\n----------------------------------\n"); }
 		 */
-
+		
+		
 		// Prueba Procesador/Monitor/ las tres colas al tiempo
 
 		Procesador procesador = new Procesador();
@@ -55,13 +56,14 @@ public class Main {
 		procesador.insertarProcesoCola(9, 2, 0);
 		procesador.insertarProcesoCola(4, 3, 0);
 		procesador.insertarProcesoCola(3, 4, 0);
-
+      
 		/*
 		 * procesador.insertarProcesoCola(4, 0, 1); procesador.insertarProcesoCola(2, 1,
 		 * 1); procesador.insertarProcesoCola(3, 2, 1);
 		 * procesador.insertarProcesoCola(2, 0, 2); procesador.insertarProcesoCola(3, 1,
 		 * 2); procesador.insertarProcesoCola(4, 2, 2);
 		 */
+		
 		procesador.mostrarColas();
 
 		procesador.iniciar();

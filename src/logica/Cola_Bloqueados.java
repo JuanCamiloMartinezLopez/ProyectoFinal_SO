@@ -6,6 +6,7 @@ public class Cola_Bloqueados extends Cola {
 	private int numProcesosBloqueados;
 
 	public Cola_Bloqueados(int tiempoBloqueo) {
+		this.IdCola=3;
 		this.NombreCola = "Bloqueados";
 		this.tiempoBloqueo = tiempoBloqueo + 1;
 		this.numProcesosBloqueados = 0;
