@@ -13,7 +13,6 @@ public class Procesador implements Runnable {
 	public Cola_Final cola = new Cola_Final();
 
 	public Gui interfaz;
-	private boolean pausa=false;
 
 	public Procesador() {
 		this.monitor = new Monitor();
@@ -44,10 +43,6 @@ public class Procesador implements Runnable {
 	public void detener() {
 		this.stop = true;
 	}
-	
-	public void pausar_despuasar() {
-		this.pausa=!this.pausa;
-	}
 
 	public int getTiempo() {
 		return tiempo;
@@ -64,7 +59,7 @@ public class Procesador implements Runnable {
 			System.out.println("No hay proceso para ejecutar, obteniendo Proceso....");
 			this.procesoEjecutar = this.monitor.ObtenerProceso();
 			if(this.procesoEjecutar!=null) {
-				cola.InsertarProceso(this.procesoEjecutar.duplicar());	
+				cola.InsertarProceso(this.procesoEjecutar);	
 			}
 		}
 		if (this.procesoEjecutar != null) {
@@ -108,7 +103,7 @@ public class Procesador implements Runnable {
 
 			this.procesoEjecutar.rafaga = this.procesoEjecutar.rafagaRestante();
 			this.procesoEjecutar.rrejecutada = this.procesoEjecutar.rrejecutada + this.procesoEjecutar.rafagaEjecutada;
-			this.monitor.reinsertarProcesoRR(procesoEjecutar.duplicar());
+			this.monitor.reinsertarProcesoRR(procesoEjecutar);
 			cola.CambiarRafaga(this.procesoEjecutar.rafagaEjecutada);
 			this.procesoEjecutar.rafagaEjecutada = 0;
 			this.procesoEjecutar = null;
@@ -116,11 +111,8 @@ public class Procesador implements Runnable {
 	}
 
 	public void bloquearProcesoEjecutar() {
-		if(this.procesoEjecutar==null)return;
-		System.out.println("Bloquando proceso " + this.procesoEjecutar.id + " al tiempo " + this.tiempo);
-		Proceso p= new Proceso();
-		p=this.procesoEjecutar.duplicar();
-		this.monitor.bloquearProceso(p);
+		System.out.println("Bloquando proceso " + this.procesoEjecutar.id + " al tiempo" + this.tiempo);
+		this.monitor.bloquearProceso(this.procesoEjecutar);
 		cola.recalcularBloqueado(this.procesoEjecutar.rafagaEjecutada);
 		this.procesoEjecutar = null;
 	}
@@ -131,16 +123,12 @@ public class Procesador implements Runnable {
 
 		while (!this.stop) {
 			System.out.println("\n------------------------------");
-			if(!this.pausa) {
-				this.tiempo++;
-				System.out.println("tiempo: " + this.tiempo);
-				this.monitor.actualizarTiempo(this.tiempo);
-				this.EjecutarProceso();
-				this.interfaz.setTiempo(this.tiempo);
-				this.mostrarColas();
-			}else {
-				System.out.println("Procesador pausado");
-			}
+			this.tiempo++;
+			System.out.println("tiempo: " + this.tiempo);
+			this.monitor.actualizarTiempo(this.tiempo);
+			this.EjecutarProceso();
+			this.interfaz.setTiempo(this.tiempo);
+			this.mostrarColas();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

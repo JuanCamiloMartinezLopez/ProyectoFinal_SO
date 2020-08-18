@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.Label;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.TextArea;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -36,8 +37,9 @@ import javax.swing.JRadioButton;
 import java.awt.Choice;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
-public class Gui {
+public class Gui{
 
 	private JFrame frame;
 	private JTable tabla_final;
@@ -47,9 +49,13 @@ public class Gui {
 	private JTable tablaBloqueados;
 	private Procesador procesador;
 	private JLabel labeltiempo;
+	private Lienzo canvasGrantt;
+	private Graphics grantt;
+	private Cola_Final cFinal;
 
 	private int tiempo = 0;
 	public boolean iniciar = false;
+	private int i = 0;
 
 	public void setTiempo(int tiempo) {
 		this.tiempo = tiempo;
@@ -85,6 +91,11 @@ public class Gui {
 		Object[][] filasTabla = null;
 		String[] columnaTablaBloqueados = { "Id proceso", "Cola", "T.En cola" };
 		String[][] filasTablaBloqueados = null;
+		String [] columnasGrantt = new String[20];
+		columnasGrantt[0] = "ID";
+		for (int i = 1 ; i < 20 ; i++) {
+			columnasGrantt[i] = String.valueOf(i);
+		}
 
 		frame = new JFrame();
 		frame.setBounds(0, 0, 1400, 766);
@@ -96,6 +107,7 @@ public class Gui {
 		DefaultTableModel modeloTablaSJF = new DefaultTableModel(filasTabla, columnaTabla);
 		DefaultTableModel modeloTablaFCFS = new DefaultTableModel(filasTabla, columnaTabla);
 		DefaultTableModel modeloTablaBloqueado = new DefaultTableModel(filasTablaBloqueados, columnaTablaBloqueados);
+		
 
 		tabla_final = new JTable(modeloTablaFinal);
 		tabla_final.setBounds(233, 48, 643, 168);
@@ -128,6 +140,11 @@ public class Gui {
 		JScrollPane scrollTablaFCFS = new JScrollPane(tablaFCFS);
 		scrollTablaFCFS.setBounds(910, 417, 450, 236);
 		frame.getContentPane().add(scrollTablaFCFS);
+		
+		canvasGrantt = new Lienzo();
+		frame.getContentPane().add(canvasGrantt);
+		
+		grantt = canvasGrantt.getGraphics();
 
 		tablaBloqueados = new JTable(modeloTablaBloqueado);
 		tablaBloqueados.setBounds(917, 48, 234, 303);
@@ -137,10 +154,6 @@ public class Gui {
 		scrollBloqueado.setBounds(917, 48, 234, 303);
 		frame.getContentPane().add(scrollBloqueado);
 
-		Canvas grannt = new Canvas();
-		grannt.setBounds(233, 222, 643, 163);
-		frame.getContentPane().add(grannt);
-
 		Label labelTitulo = new Label("Procesador");
 		labelTitulo.setFont(new Font("Arial", Font.PLAIN, 23));
 		labelTitulo.setBounds(514, 10, 123, 32);
@@ -148,7 +161,7 @@ public class Gui {
 
 		Label labelRoundRobin = new Label("Round Robin");
 		labelRoundRobin.setFont(new Font("Arial", Font.PLAIN, 18));
-		labelRoundRobin.setBounds(157, 391, 123, 27);
+		labelRoundRobin.setBounds(156, 391, 123, 27);
 		frame.getContentPane().add(labelRoundRobin);
 
 		Label labelSJF = new Label("SJF");
@@ -214,7 +227,6 @@ public class Gui {
 		frame.getContentPane().add(labelidColaFCFS);
 
 		labeltiempo = new JLabel("tiempo: 0");
-		labeltiempo.setForeground(Color.RED);
 		labeltiempo.setFont(new Font("Arial", Font.PLAIN, 13));
 		labeltiempo.setBounds(669, 671, 75, 21);
 		frame.getContentPane().add(labeltiempo);
@@ -226,8 +238,6 @@ public class Gui {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				procesador.bloquearProcesoEjecutar();
-				ActualizarTablas();
-				ActualizarTablaHistorial();
 			}
 		});
 
@@ -258,8 +268,16 @@ public class Gui {
 		botonIniciar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (!iniciar) {
+					botonIniciar.setLabel("Detener");
 					procesador.iniciar();
 					iniciar = true;
+					pintar();
+				} else {
+					botonIniciar.setLabel("Iniciar");
+					procesador.detener();
+					iniciar = false;
+				}
 
 			}
 		});
@@ -267,20 +285,16 @@ public class Gui {
 		Button botonPausar = new Button("Pausar");
 		botonPausar.setBounds(1061, 670, 90, 22);
 		frame.getContentPane().add(botonPausar);
+		
+		
 
 		botonPausar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (!iniciar) {
-					botonPausar.setLabel("Pausar");
-					iniciar = true;
-				} else {
-					botonPausar.setLabel("Continuar");
-					iniciar = false;
-				}
-				procesador.pausar_despuasar();
+				limpiarTabla(tabla_final, tabla_final.getRowCount());
 			}
 		});
+		pintar();
 	}
 
 	public String Mostrartiempo() {
@@ -312,11 +326,19 @@ public class Gui {
 			}
 
 			this.limpiarTabla(tabla, tabla.getRowCount());
-			info = cola.infoProcesos();
-			int tamaño = cola.getNumProcesos();
-			for (int i = 0; i < tamaño; i++) {
-				modelo.addRow(info[i]);
+			if (cola.getIdCola() != 3) {
+				info = cola.infoProcesos();
+				int tamaño = cola.getNumProcesos();
+				// System.out.println("tamaño "+tamaño);
+				for (int i = 0; i < tamaño; i++) {
+					// System.out.println("proceso "+(i+1));
+					for (int j = 0; j < 5; j++) {
+						// System.out.println(info[i][j]);
+					}
+					modelo.addRow(info[i]);
+				}
 			}
+
 		}
 	}
 
@@ -344,7 +366,7 @@ public class Gui {
 
 	public void ActualizarTablaHistorial() {
 		JTable tabla = this.tabla_final;
-		Cola_Final cFinal = this.procesador.getCola_final();
+		cFinal = this.procesador.getCola_final();
 		DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
 		if (cFinal.colaVacia()) {
 			this.limpiarTabla(tabla, tabla.getRowCount());
@@ -352,19 +374,21 @@ public class Gui {
 		}
 		this.limpiarTabla(tabla, tabla.getRowCount());
 		Object[][] info = cFinal.infoProcesos();
+		
 		int tamaño = cFinal.getNumProcesos();
-		//System.out.println("tamaño cola final " + tamaño);
+		System.out.println("tamaño cola final " + tamaño);
 		for (int i = 0; i < tamaño; i++) {
-			//System.out.println("proceso " + (i + 1));
+			System.out.println("proceso " + (i + 1));
 			for (int j = 0; j < 5; j++) {
-				//System.out.println(info[i][j]);
+				System.out.println(info[i][j]);
 			}
 			modelo.addRow(info[i]);
 		}
 	}
+	
+	
 
 	public void limpiarTabla(JTable t, int n) {
-
 		DefaultTableModel modelo = (DefaultTableModel) t.getModel();
 		if (modelo.getRowCount() > 0) {
 			for (int i = 0; i < n; i++) {
@@ -373,4 +397,11 @@ public class Gui {
 		}
 
 	}
+	public void pintar() {
+	//	canvasGrantt.nombre("Hola");
+		canvasGrantt.tabla(tabla_final);
+		canvasGrantt.repaint();
+	}
+	
+	//"Id proceso", "T.LLegada", "Rafaga", "T.Comienzo", "T.Final", "T.Retorno","T.Espera", "Cola Origen", "Cola Final" 
 }
