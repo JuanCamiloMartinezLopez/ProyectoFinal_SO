@@ -1,5 +1,6 @@
 package logica;
 
+import java.awt.Graphics;
 import java.util.Scanner;
 
 import GUI.Gui;
@@ -11,6 +12,7 @@ public class Procesador implements Runnable {
 	private Monitor monitor;
 	private Proceso procesoEjecutar = null;
 	public Cola_Final cola = new Cola_Final();
+	private Graphics gantt;
 
 	public Gui interfaz;
 
@@ -116,6 +118,10 @@ public class Procesador implements Runnable {
 		cola.recalcularBloqueado(this.procesoEjecutar.rafagaEjecutada);
 		this.procesoEjecutar = null;
 	}
+	
+	public void dibujarGantt() {
+		
+	}
 
 	@Override
 	public void run() {
@@ -138,6 +144,10 @@ public class Procesador implements Runnable {
 		}
 		System.out.println("\nProcesador terminado al tiempo: " + this.tiempo);
 		this.cola.mostrarConsola();
+	}
+
+	public void setGantt(Graphics gantt) {
+		this.gantt = gantt;
 	}
 
 }
