@@ -64,7 +64,7 @@ public class Procesador implements Runnable {
 			System.out.println("No hay proceso para ejecutar, obteniendo Proceso....");
 			this.procesoEjecutar = this.monitor.ObtenerProceso();
 			if(this.procesoEjecutar!=null) {
-				cola.InsertarProceso(this.procesoEjecutar);	
+				cola.InsertarProceso(this.procesoEjecutar.duplicar());	
 			}
 		}
 		if (this.procesoEjecutar != null) {
@@ -108,7 +108,7 @@ public class Procesador implements Runnable {
 
 			this.procesoEjecutar.rafaga = this.procesoEjecutar.rafagaRestante();
 			this.procesoEjecutar.rrejecutada = this.procesoEjecutar.rrejecutada + this.procesoEjecutar.rafagaEjecutada;
-			this.monitor.reinsertarProcesoRR(procesoEjecutar);
+			this.monitor.reinsertarProcesoRR(procesoEjecutar.duplicar());
 			cola.CambiarRafaga(this.procesoEjecutar.rafagaEjecutada);
 			this.procesoEjecutar.rafagaEjecutada = 0;
 			this.procesoEjecutar = null;
@@ -116,9 +116,12 @@ public class Procesador implements Runnable {
 	}
 
 	public void bloquearProcesoEjecutar() {
-		System.out.println("Bloquando proceso " + this.procesoEjecutar.id + " al tiempo" + this.tiempo);
+		if(this.procesoEjecutar==null)return;
+		System.out.println("Bloquando proceso " + this.procesoEjecutar.id + " al tiempo " + this.tiempo);
+		Proceso p= new Proceso();
+		p=this.procesoEjecutar.duplicar();
+		this.monitor.bloquearProceso(p);
 		cola.recalcularBloqueado(this.procesoEjecutar.rafagaEjecutada);
-		this.monitor.bloquearProceso(this.procesoEjecutar);
 		this.procesoEjecutar = null;
 	}
 

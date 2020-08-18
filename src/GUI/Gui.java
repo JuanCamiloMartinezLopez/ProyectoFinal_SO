@@ -226,6 +226,8 @@ public class Gui {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				procesador.bloquearProcesoEjecutar();
+				ActualizarTablas();
+				ActualizarTablaHistorial();
 			}
 		});
 
@@ -310,19 +312,11 @@ public class Gui {
 			}
 
 			this.limpiarTabla(tabla, tabla.getRowCount());
-			if (cola.getIdCola() != 3) {
-				info = cola.infoProcesos();
-				int tamaño = cola.getNumProcesos();
-				// System.out.println("tamaño "+tamaño);
-				for (int i = 0; i < tamaño; i++) {
-					// System.out.println("proceso "+(i+1));
-					for (int j = 0; j < 5; j++) {
-						// System.out.println(info[i][j]);
-					}
-					modelo.addRow(info[i]);
-				}
+			info = cola.infoProcesos();
+			int tamaño = cola.getNumProcesos();
+			for (int i = 0; i < tamaño; i++) {
+				modelo.addRow(info[i]);
 			}
-
 		}
 	}
 
