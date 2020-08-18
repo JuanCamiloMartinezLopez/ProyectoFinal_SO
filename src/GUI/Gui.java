@@ -54,6 +54,10 @@ public class Gui {
 	private JLabel labeltiempo;
 	private Lienzo canvasGrantt;
 
+	public Lienzo getCanvasGrantt() {
+		return canvasGrantt;
+	}
+
 	private int tiempo = 0;
 	public boolean iniciar = false;
 
@@ -145,7 +149,7 @@ public class Gui {
 
 		canvasGrantt = new Lienzo();
 		frame.getContentPane().add(canvasGrantt);
-
+		
 		Label labelTitulo = new Label("Procesador");
 		labelTitulo.setFont(new Font("Arial", Font.PLAIN, 23));
 		labelTitulo.setBounds(514, 10, 123, 32);

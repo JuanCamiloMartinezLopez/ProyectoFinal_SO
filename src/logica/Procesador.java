@@ -67,6 +67,7 @@ public class Procesador implements Runnable {
 			this.procesoEjecutar = this.monitor.ObtenerProceso();
 			if (this.procesoEjecutar != null) {
 				cola.InsertarProceso(this.procesoEjecutar.duplicar());
+				this.dibujarGantt(this.interfaz.getCanvasGrantt().getGraphics());
 			}
 		}
 		if (this.procesoEjecutar != null) {
@@ -128,8 +129,32 @@ public class Procesador implements Runnable {
 		this.procesoEjecutar = null;
 	}
 	
-	public void dibujarGantt() {
+	public void dibujarGantt(Graphics g) {
+		if(g==null) {
+			System.out.println("No se puede dibujar");
+			return;
+		}
+		int num=this.cola.getNumProcesos();
+		Proceso p=cola.raiz;
+		for(int i= 0; i<num; i++) {
+			p=p.sig;
+			g.drawString(p.id, 0, (i+1)*25);
+		}
 		
+	}
+	
+	public void dibujarGanttProceso(Graphics g, int tiempo) {
+		//aqui voy a dibujar los procesos segun el tiempo
+		if(g==null) {
+			System.out.println("No se puede dibujar");
+			return;
+		}
+		int num=this.cola.getNumProcesos();
+		Proceso p=cola.raiz;
+		for(int i= 0; i<num; i++) {
+			p=p.sig;
+			g.drawString(p.id, 0, (i+1)*25);
+		}
 	}
 
 	@Override
@@ -161,6 +186,7 @@ public class Procesador implements Runnable {
 
 	public void setGantt(Graphics gantt) {
 		this.gantt = gantt;
+		if(gantt!=null)System.out.println("gantt añadido");
 	}
 
 }
