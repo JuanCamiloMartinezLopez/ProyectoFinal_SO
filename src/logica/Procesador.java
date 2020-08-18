@@ -13,6 +13,7 @@ public class Procesador implements Runnable {
 	public Cola_Final cola = new Cola_Final();
 
 	public Gui interfaz;
+	private boolean pausa=false;
 
 	public Procesador() {
 		this.monitor = new Monitor();
@@ -42,6 +43,10 @@ public class Procesador implements Runnable {
 
 	public void detener() {
 		this.stop = true;
+	}
+	
+	public void pausar_despuasar() {
+		this.pausa=!this.pausa;
 	}
 
 	public int getTiempo() {
@@ -123,12 +128,16 @@ public class Procesador implements Runnable {
 
 		while (!this.stop) {
 			System.out.println("\n------------------------------");
-			this.tiempo++;
-			System.out.println("tiempo: " + this.tiempo);
-			this.monitor.actualizarTiempo(this.tiempo);
-			this.EjecutarProceso();
-			this.interfaz.setTiempo(this.tiempo);
-			this.mostrarColas();
+			if(!this.pausa) {
+				this.tiempo++;
+				System.out.println("tiempo: " + this.tiempo);
+				this.monitor.actualizarTiempo(this.tiempo);
+				this.EjecutarProceso();
+				this.interfaz.setTiempo(this.tiempo);
+				this.mostrarColas();
+			}else {
+				System.out.println("Procesador pausado");
+			}
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
