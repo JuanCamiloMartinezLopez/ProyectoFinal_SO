@@ -195,7 +195,8 @@ public class Gui {
 		labelidColaFCFS.setBounds(1193, 391, 150, 22);
 		frame.getContentPane().add(labelidColaFCFS);
 		
-		labeltiempo = new JLabel("tiempo: 0");
+		labeltiempo = new JLabel("Tiempo: 0");
+		labeltiempo.setForeground(Color.RED);
 		labeltiempo.setFont(new Font("Arial", Font.PLAIN, 13));
 		labeltiempo.setBounds(669, 671, 75, 21);
 		frame.getContentPane().add(labeltiempo);
@@ -237,16 +238,8 @@ public class Gui {
 		botonIniciar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(!iniciar) {
-					botonIniciar.setLabel("Detener");
-					procesador.iniciar();
-					iniciar=true;
-				}else {
-					botonIniciar.setLabel("Iniciar");
-					procesador.detener();
-					iniciar=false;
-				}
-				
+				procesador.iniciar();
+				iniciar=true;
 			}
 		});
 
@@ -256,7 +249,14 @@ public class Gui {
 		botonPausar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				limpiarTabla(tabla_final, tabla_final.getRowCount());
+				if(iniciar) {
+					botonPausar.setLabel("Continuar");
+					iniciar=false;
+				}else {
+					botonPausar.setLabel("Pausar");
+					iniciar=true;
+				}
+				procesador.pausar_despausar();
 			}
 		});
 	}
@@ -264,9 +264,9 @@ public class Gui {
 	public String Mostrartiempo() {
 		if(this.iniciar) {
 			
-			return "tiempo: "+String.valueOf(this.tiempo);
+			return "Tiempo: "+String.valueOf(this.tiempo);
 		}
-		return "tiempo: 0";
+		return "Pausado";
 	}
 	
 	public void insertarProceso(int rafaga, int tllegada, int cola) {

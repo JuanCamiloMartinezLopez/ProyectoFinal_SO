@@ -17,7 +17,7 @@ public class Cola_RoundRobin extends Cola{
 	public void calcularTiemposProcesos() {
 		//System.out.println("Calculo de tiempos para el round robin con el Quantum: "+ this.Quantum);
 		Proceso aux= this.raiz.sig;
-		aux.tcomienzo=this.tiempo+1;
+		aux.tcomienzo=this.tiempo;
 		if (aux.tcomienzo < aux.tllegada) {
 			aux.tcomienzo = aux.tllegada;
 		}

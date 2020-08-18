@@ -234,7 +234,7 @@ public class Cola {
 
 	public void calcularTiemposProcesos() {
 		Proceso aux = this.raiz.sig;
-		aux.tcomienzo = this.tiempo + 1;
+		aux.tcomienzo = this.tiempo;
 		if (aux.tcomienzo < aux.tllegada) {
 			aux.tcomienzo = aux.tllegada;
 		}
