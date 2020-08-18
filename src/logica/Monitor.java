@@ -30,7 +30,7 @@ public class Monitor {
 	// Insertar Proceso segun idCola
 	public void InsertarProceso(int rafaga, int tllegada, int idCola) {
 		if (idCola > 3 || idCola < 0 || rafaga < 0 || tllegada < 0) {
-			System.out.println("Datos incorrectos, no es posible añadir proceso");
+			System.out.println("Datos incorrectos, no es posible aï¿½adir proceso");
 			return;
 		}
 		colas[idCola].insertar(rafaga, tllegada);

@@ -12,7 +12,6 @@ public class Lienzo extends Canvas {
 	private String nombre;
 	private int largo = 866;
 	private int ancho = 163;
-	private Object[][] cFinal;
 	private JTable tabla;
 
 	Lienzo() {
@@ -35,11 +34,11 @@ public class Lienzo extends Canvas {
 			i = i + 4;
 		}
 
-		if (cFinal != null) {
-			g.setColor(Color.orange);
+	//	if ( != null) {
+	//		g.setColor(Color.orange);
 			//tabla.
 			//g.drawRect(20, 20, (int) cFinal[0][2], 10);
-		}
+	//	}
 
 	}
 

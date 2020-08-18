@@ -13,6 +13,7 @@ public class Procesador implements Runnable {
 	public Cola_Final cola = new Cola_Final();
 
 	public Gui interfaz;
+	private boolean pausa = false;
 
 	public Procesador() {
 		this.monitor = new Monitor();
@@ -44,6 +45,10 @@ public class Procesador implements Runnable {
 		this.stop = true;
 	}
 
+	public void pausar_despuasar() {
+		this.pausa = !this.pausa;
+	}
+
 	public int getTiempo() {
 		return tiempo;
 	}
@@ -58,12 +63,12 @@ public class Procesador implements Runnable {
 		if (this.procesoEjecutar == null) {
 			System.out.println("No hay proceso para ejecutar, obteniendo Proceso....");
 			this.procesoEjecutar = this.monitor.ObtenerProceso();
-			if(this.procesoEjecutar!=null) {
-				cola.InsertarProceso(this.procesoEjecutar);	
+			if (this.procesoEjecutar != null) {
+				cola.InsertarProceso(this.procesoEjecutar.duplicar());
 			}
 		}
 		if (this.procesoEjecutar != null) {
-			
+
 			this.procesoEjecutar.rafagaEjecutada++;
 			System.out.println("Ejecutando el proceso " + this.procesoEjecutar.id + " con rafaga restante "
 					+ this.procesoEjecutar.rafagaRestante() + " de la cola " + this.procesoEjecutar.NombreCola);
@@ -80,7 +85,7 @@ public class Procesador implements Runnable {
 			}
 		} else {
 			System.out.println("No hay mas procesos en las colas");
-			//this.detener();
+			// this.detener();
 		}
 
 	}
@@ -103,7 +108,7 @@ public class Procesador implements Runnable {
 
 			this.procesoEjecutar.rafaga = this.procesoEjecutar.rafagaRestante();
 			this.procesoEjecutar.rrejecutada = this.procesoEjecutar.rrejecutada + this.procesoEjecutar.rafagaEjecutada;
-			this.monitor.reinsertarProcesoRR(procesoEjecutar);
+			this.monitor.reinsertarProcesoRR(procesoEjecutar.duplicar());
 			cola.CambiarRafaga(this.procesoEjecutar.rafagaEjecutada);
 			this.procesoEjecutar.rafagaEjecutada = 0;
 			this.procesoEjecutar = null;
@@ -111,8 +116,12 @@ public class Procesador implements Runnable {
 	}
 
 	public void bloquearProcesoEjecutar() {
-		System.out.println("Bloquando proceso " + this.procesoEjecutar.id + " al tiempo" + this.tiempo);
-		this.monitor.bloquearProceso(this.procesoEjecutar);
+		if (this.procesoEjecutar == null)
+			return;
+		System.out.println("Bloquando proceso " + this.procesoEjecutar.id + " al tiempo " + this.tiempo);
+		Proceso p = new Proceso();
+		p = this.procesoEjecutar.duplicar();
+		this.monitor.bloquearProceso(p);
 		cola.recalcularBloqueado(this.procesoEjecutar.rafagaEjecutada);
 		this.procesoEjecutar = null;
 	}
@@ -123,12 +132,16 @@ public class Procesador implements Runnable {
 
 		while (!this.stop) {
 			System.out.println("\n------------------------------");
-			this.tiempo++;
-			System.out.println("tiempo: " + this.tiempo);
-			this.monitor.actualizarTiempo(this.tiempo);
-			this.EjecutarProceso();
-			this.interfaz.setTiempo(this.tiempo);
-			this.mostrarColas();
+			if (!this.pausa) {
+				this.tiempo++;
+				System.out.println("tiempo: " + this.tiempo);
+				this.monitor.actualizarTiempo(this.tiempo);
+				this.EjecutarProceso();
+				this.interfaz.setTiempo(this.tiempo);
+				this.mostrarColas();
+			} else {
+				System.out.println("Procesador pausado");
+			}
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

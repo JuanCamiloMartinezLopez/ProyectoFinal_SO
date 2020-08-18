@@ -47,7 +47,7 @@ public class Cola {
 		nuevo.tllegada = tiempo;
 		nuevo.IdCola = this.IdCola;
 		nuevo.NombreCola = this.NombreCola;
-		nuevo.ColaProviene=this.NombreCola;
+		nuevo.ColaProviene = this.NombreCola;
 		if (raiz.sig == raiz) {
 			raiz.sig = nuevo;
 			cabeza = nuevo;
@@ -78,8 +78,8 @@ public class Cola {
 		nuevo.NombreCola = this.NombreCola;
 		nuevo.rrejecutada = p.rrejecutada;
 		nuevo.ColaProviene = p.ColaProviene;
-		int tamañoId = p.id.length();
-		if (tamañoId == 1) {
+		int tamaño = p.id.length();
+		if (tamaño == 1) {
 			nuevo.id = p.id + "1";
 		} else {
 			char id = p.id.charAt(0);
@@ -134,12 +134,12 @@ public class Cola {
 		this.rafagaTotal += nuevo.rafaga;
 		this.Ordenamiento();
 	}
-	
+
 	public int getIdCola() {
 		return IdCola;
 	}
 
-	//Insertar un proceso con todos los datos
+	// Insertar un proceso con todos los datos
 	public void InsertarProceso(Proceso nuevo) {
 		if (raiz.sig == raiz) {
 			raiz.sig = nuevo;
@@ -173,7 +173,7 @@ public class Cola {
 		this.calcularTiemposProcesos();
 		return proceso;
 	}
-	
+
 	// Cola vacia
 	public boolean colaVacia() {
 		if (raiz.sig == raiz) {
@@ -209,19 +209,19 @@ public class Cola {
 		this.tiempo = tiempo;
 		this.calcularTiemposProcesos();
 	}
-	
-	public Object[][] infoProcesos(){
-		Object[][] info= new Object[this.numProcesos][5];
+
+	public Object[][] infoProcesos() {
+		Object[][] info = new Object[this.numProcesos][5];
 		Proceso aux = this.raiz;
-		int i=0;
+		int i = 0;
 		while (aux.sig != this.raiz) {
-			aux=aux.sig;
-			//System.out.println(i+" - "+aux.toString());
-			info[i][0]=aux.id;
-			info[i][1]=aux.rafaga;
-			info[i][2]=aux.tllegada;
-			info[i][3]=aux.ColaProviene;
-			info[i][4]=this.tiempo - aux.tllegada + 1;
+			aux = aux.sig;
+			// System.out.println(i+" - "+aux.toString());
+			info[i][0] = aux.id;
+			info[i][1] = aux.rafaga;
+			info[i][2] = aux.tllegada;
+			info[i][3] = aux.ColaProviene;
+			info[i][4] = this.tiempo - aux.tllegada + 1;
 			i++;
 		}
 		return info;
